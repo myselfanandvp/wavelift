@@ -14,7 +14,7 @@ class User(AbstractUser):
     phone_number = models.CharField(
         max_length=13,
         unique=True,
-        null=False,
+        null=True,
         blank=False,
         validators=[
             RegexValidator(
@@ -51,7 +51,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'  # Use email to log in
-    REQUIRED_FIELDS = ['username', 'phone_number']  # Required when using createsuperuser
+    REQUIRED_FIELDS = ['username']  # Required when using createsuperuser
 
     def __str__(self):
         return f"{self.username} ({self.email})"

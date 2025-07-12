@@ -21,4 +21,5 @@ urlpatterns = [
     path('django-sceret-admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('',include('core.urls')),
+    path("user/",include('users.urls'))
 ]

@@ -1,19 +1,49 @@
+{% load static %}
 <!DOCTYPE html>
-{%load static%}
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="{% static 'dir/style.css' %}" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}WaveLift{% endblock %}</title>
+
+    <!-- Static CSS -->
+    <link href="{% static 'dir/style.css' %}" rel="stylesheet" />
+
+    <!-- Inline styles for number input spinner removal -->
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
-<body>
 
-    {%include 'shared/header.html'%}
-    {%block content%}
+<body class="bg-white text-gray-900">
 
-    {%endblock%}
+    <!-- Header -->
+    <header>
+        {% include 'shared/header.html' %}
+    </header>
 
-    {%include 'shared/footer.html'%}
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+   <section>
+
+       {% include 'shared/footer.html' %}
+   </section>
+
+
 </body>
+
 </html>

@@ -5,5 +5,5 @@ from django.views import View
 class  HomePage(View):
     template_name= 'core/index.html'
     def get(self,request):
-        return render(request,HomePage.template_name,{})
+        return render(request,self.template_name,{})
 
