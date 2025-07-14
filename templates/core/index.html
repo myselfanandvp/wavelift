@@ -1,8 +1,102 @@
 {%extends 'shared/base.html'%}
 
-
+{%load static%}
 
 {%block content%}
-<h1>dkjfkaj</h1>
+<section class="flex px-4 flex-col bg-gray-200">
+
+<!-- Top Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="flex justify-center items-center flex-col text-center">
+    <p class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-medium">ULTIMATE</p>
+    <p class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-extrabold">SALE</p>
+
+    <button type="button" class="mt-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 lg:py-8 py-4 lg:w-2/5">
+      Shop Now
+    </button>
+  </div>
+
+  <div class="flex justify-center items-center">
+    <img src="{% static 'offer_images/sony.jpeg' %}" alt="Login Banner" class="w-full rounded-3xl" />
+  </div>
+</div>
+
+
+ <!-- Category Header -->
+    <section class="py-6">
+      <h2 class="text-2xl font-semibold text-center">EXPLORE BY CATEGORY</h2>
+    </section>
+
+
+    <!-- Deals Section -->
+    <section class="py-8">
+<h2 class="text-xl font-bold mb-4 text-center">TOP DEALS</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
+  <a href="#"
+    class="w-full text-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 block">
+    All Deals
+  </a>
+  <a href="#"
+    class="w-full text-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 block">
+    True Wireless Earbuds
+  </a>
+  <a href="#"
+    class="w-full text-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 block">
+    Neckbands and Headphones
+  </a>
+  <a href="#"
+    class="w-full text-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 block">
+    Smartwatches
+  </a>
+
+</div>
+
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="text-center">
+          <img src="images/image-9-22.png" class="w-full rounded-lg" alt="Product 1" />
+          <p class="mt-2 text-sm">True Wireless Earbuds</p>
+        </div>
+        <div class="text-center">
+          <img src="images/image-11-24.png" class="w-full rounded-lg" alt="Product 2" />
+          <p class="mt-2 text-sm">Wireless Headphone</p>
+        </div>
+        <div class="text-center">
+          <img src="images/image-5-36.png" class="w-full rounded-lg" alt="Product 3" />
+          <p class="mt-2 text-sm">Smartwatch</p>
+        </div>
+        <div class="text-center">
+          <img src="images/image-5-39.png" class="w-full rounded-lg" alt="Product 4" />
+          <p class="mt-2 text-sm">Limited Edition</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section class="py-8">
+      <h2 class="text-xl font-bold mb-4 text-center">NEW ARRIVALS</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="text-center">
+          <img src="images/image-5-48.png" class="w-full rounded-lg" alt="Product 5" />
+          <p class="mt-2 text-sm">True Wireless Earbuds</p>
+        </div>
+        <div class="text-center">
+          <img src="images/image-5-45.png" class="w-full rounded-lg" alt="Product 6" />
+          <p class="mt-2 text-sm">Neckbands</p>
+        </div>
+        <div class="text-center">
+          <img src="images/image-5-42.png" class="w-full rounded-lg" alt="Product 7" />
+          <p class="mt-2 text-sm">Wireless Headphones</p>
+        </div>
+        <div class="text-center">
+          <img src="images/unsplash-d54wbtjedog-71.png" class="w-full rounded-lg" alt="Product 8" />
+          <p class="mt-2 text-sm">Smartwatch</p>
+        </div>
+      </div>
+    </section>
+
+</section>
+
 
 {%endblock%}
