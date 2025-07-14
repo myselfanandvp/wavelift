@@ -21,6 +21,13 @@ class UserForm(forms.ModelForm):
             # 'profile_img':forms.FileInput(attrs={**image_field_style}),
 
         }
+    def save(self, commit = True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()        
+            return user
+        
 
 
 class BaseLoginForm(forms.Form):

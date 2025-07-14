@@ -46,17 +46,17 @@
                 <label class="block mb-1 text-sm font-medium text-gray-700">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}
-                <p class="text-sm text-red-600">{{ field.errors|striptags }}</p>
+                <p class="text-sm text-red-600 pt-4">{{ field.errors|striptags }}</p>
                 {% endif %}
             </div>
             {% endfor %}
 
-              <!-- Forgot password link -->
-                <div class="text-right mt-1">
-                    <a href="{%url 'change_password_url'%}" class="text-sm text-blue-300 hover:underline">
-                        Forgot password?
-                    </a>
-                </div>
+            <!-- Forgot password link -->
+            <div class="text-right mt-1">
+                <a href="{%url 'change_password_url'%}" class="text-sm text-blue-300 hover:underline">
+                    Forgot password?
+                </a>
+            </div>
 
             <!-- Submit Button -->
             <div class="flex justify-center">
@@ -72,13 +72,13 @@
             </div>
         </form>
 
-       <!-- Image Section -->
-<div class="hidden md:flex justify-center w-full h-96 relative">
-  <div class="relative w-full max-w-4xl h-full overflow-hidden rounded-3xl">
-    <img src="{% static 'app_images/form_images/login-banner.jpeg' %}" alt="Signup Banner"
-         class="absolute inset-0 w-full h-full object-cover object-[50%_30%]" />
-  </div>
-</div>
+        <!-- Image Section -->
+        <div class="hidden md:flex justify-center w-full h-96 relative">
+            <div class="relative w-full max-w-4xl h-full overflow-hidden rounded-3xl">
+                <img src="{% static 'app_images/form_images/login-banner.jpeg' %}" alt="Signup Banner"
+                    class="absolute inset-0 w-full h-full object-cover object-[50%_30%]" />
+            </div>
+        </div>
 
     </div>
 </main>

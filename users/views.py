@@ -1,15 +1,27 @@
 from .forms import User,UserForm,LoginForm,Admin_Login_Form,Change_Password_Form,OTPVerificationForm,RestPassword
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
+from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
 
 class LoginUser(View):
     template_name = "user/user_login_page.html"
     def get(self,request):
-        return render(request,self.template_name,{'form':LoginForm})
+        form = LoginForm()
+        return render(request,self.template_name,{'form':form})
     def post(self,request):
-        pass
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email, password = form.cleaned_data.get('email'),form.cleaned_data.get('password')
+            user=authenticate(request,username=email,password=password)
+            if user is not None:   
+                login(user=user,request=request)
+                return redirect("index_page")             
+            else:
+                form.add_error("password","Password or email is wrong")
+                    
+        return render(request,self.template_name,{"form":form})
     
 class SignupUser(View):
     template_name= 'user/user_signup_page.html'
@@ -17,13 +29,17 @@ class SignupUser(View):
         form = UserForm()
         return render(request,self.template_name,{'form':form})
     def post(self,request):
-        pass
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login_user_url')
+        return render(request,self.template_name,{"form":form})
     
 class LogoutUser(View):
-    def get(self,request):
-        pass
     def post(self,request):
-        pass
+        logout(request)
+        return redirect("login_user_url")
+    
     
 class ChangePassword(View):
     template_name='user/change_password.html'

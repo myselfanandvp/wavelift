@@ -1,4 +1,4 @@
-from .views import SignupUser,LoginUser,LoginAdmin,ChangePassword,OTP_Validation,ForgotPassword
+from .views import SignupUser,LoginUser,LoginAdmin,ChangePassword,OTP_Validation,ForgotPassword,LogoutUser
 from django.urls import path
 urlpatterns=[
     path('signup/',SignupUser.as_view(),name="signup_user_url"),
@@ -7,4 +7,5 @@ urlpatterns=[
     path('change_password/',ChangePassword.as_view(),name="change_password_url"),
     path('otp_validation/',OTP_Validation.as_view(),name="otp_validation_url"),
     path('forgot_password/',ForgotPassword.as_view(),name="forgot_password_url"),
+    path('userlogout/',LogoutUser.as_view(),name="logout_user_url")
 ]
