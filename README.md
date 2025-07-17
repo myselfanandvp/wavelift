@@ -5,7 +5,7 @@
 ![Django](https://img.shields.io/badge/Django-4.x-green?style=flat-square&logo=django)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue?style=flat-square&logo=tailwind-css)
 ![Responsive](https://img.shields.io/badge/Responsive-Design-important?style=flat-square&logo=css3)
-![Ecommerce](https://img.shields.io/badge/Project-Type-Ecommerce-lightgrey?style=flat-square&logo=css3)
+![Ecommerce](https://img.shields.io/badge/Project_Type-Ecommerce-red?style=flat-square&logo=css3)
 
 ---
 
