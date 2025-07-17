@@ -3,6 +3,10 @@ from .models import User
 
 
 class UserForm(forms.ModelForm):
+    confirm_pass = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm password','class': 'bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}),
+        label="Confirm Password"
+    )
     class Meta:
         model = User
         input_field_style = {
@@ -10,7 +14,7 @@ class UserForm(forms.ModelForm):
         image_field_style = {
             'class': 'block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
         }
-        fields = ['email', 'password']
+        fields = ['email', 'password','confirm_pass']
         widgets = {
             # Optional if you want to control widget type
             'password': forms.PasswordInput(attrs={**input_field_style, "placeholder": "Enter the password"}),
@@ -21,6 +25,14 @@ class UserForm(forms.ModelForm):
             # 'profile_img':forms.FileInput(attrs={**image_field_style}),
 
         }
+        
+    def clean(self):
+        cleaned_data= super().clean()
+        password= cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_pass')
+        if password and confirm_password and confirm_password!=password:
+            self.add_error("confirm_pass","Password is not match.")
+            
     def save(self, commit = True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
@@ -64,53 +76,26 @@ class Change_Password_Form(forms.Form):
 
 
 class OTPVerificationForm(forms.Form):
-    otp_1 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
+    field_style={
+        'class': 'w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-center text-xl sm:text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-2 sm:p-3 md:p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
         'inputmode': 'numeric',
         'autocomplete': 'off',
         "maxlength": "1",
-    }))
-
-    otp_2 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }))
-    otp_3 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }))
-    otp_4 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }))
-    otp_5 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }))
-    otp_6 = forms.CharField(max_length=1, required=True, widget=forms.TextInput(attrs={
-        'class': 'w-14 h-14 text-center text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }))
-
+    }
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        for i in range(1, 7):  # otp_1 to otp_6
+            self.fields[f'otp_{i}'] = forms.CharField(
+                max_length=1,
+                required=True,
+                widget=forms.TextInput(attrs=self.field_style)
+            )
+        
     def get_otp(self):
-        return ''.join([
-            self.cleaned_data.get('otp_1', ''),
-            self.cleaned_data.get('otp_2', ''),
-            self.cleaned_data.get('otp_3', ''),
-            self.cleaned_data.get('otp_4', ''),
-            self.cleaned_data.get('otp_5', ''),
-            self.cleaned_data.get('otp_6', ''),
-        ])
+         return int(''.join([
+            self.cleaned_data.get(f'otp_{i}', '') for i in range(1, 7)
+        ]))
 
 
 class RestPassword(forms.Form):

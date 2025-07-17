@@ -8,7 +8,7 @@ from django.core.validators import RegexValidator
 class User(AbstractUser):
 
     id = models.UUIDField(_('User ID'), default=uuid4, primary_key=True, editable=False)
-
+    username=models.CharField(_('User Name'),null=True,blank=True,default=None)
     email = models.EmailField(_('Email Address'), unique=True, blank=False, null=False)
 
     phone_number = models.CharField(
@@ -23,6 +23,8 @@ class User(AbstractUser):
             )
         ]
     )
+    
+    
 
     profile_img = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 

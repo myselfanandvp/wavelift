@@ -16,22 +16,21 @@
             {% for field in form %}
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-300">{{ field.label }}</label>
-                {{ field }}
-
-                {% if field.name == 'password' %}
-                <!-- Forgot password link -->
-                <div class="text-right mt-1">
-                    <a href="" class="text-sm text-blue-300 hover:underline">
-                        Forgot password?
-                    </a>
-                </div>
-                {% endif %}
+                {{ field }}             
+            
 
                 {% if field.errors %}
                 <p class="text-sm text-red-600">{{ field.errors|striptags }}</p>
                 {% endif %}
             </div>
             {% endfor %}
+                <!-- Forgot password link -->
+                <div class="text-right mt-1">
+                    <a href="" class="text-sm text-blue-300 hover:underline">
+                        Forgot password?
+                    </a>
+                </div>
+             
 
             <!-- Submit Button -->
             <div class="flex justify-center">

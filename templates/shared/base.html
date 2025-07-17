@@ -6,7 +6,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}WaveLift{% endblock %}</title>
-
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- Static CSS -->
   <link href="{% static 'dir/style.css' %}" rel="stylesheet" />
 
@@ -32,11 +33,11 @@
     {% include 'shared/header.html' %}
   </header>
 
-<!-- Main Content -->
-<main class="mt-24 px-4">
-  {% block content %}
-  {% endblock %}
-</main>
+  <!-- Main Content -->
+  <main class="mt-24 px-4">
+    {% block content %}
+    {% endblock %}
+  </main>
 
 
   <!-- Footer -->
@@ -45,5 +46,6 @@
   </footer>
 
 </body>
+
 
 </html>
