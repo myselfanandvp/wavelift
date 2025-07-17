@@ -23,15 +23,26 @@
       -moz-appearance: textfield;
     }
   </style>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-200 text-gray-900 flex flex-col">
 
   <!-- Header -->
+
+  {%if not request.user.is_admin%}
   <header class="w-full">
     {% include 'shared/header.html' %}
   </header>
+
+  {%else%}
+  <header>
+
+    {%include 'shared/admin_header.html' %}
+  </header>
+  {%endif%}
+
+
 
   <!-- Main Content -->
   <main class="mt-24 px-4">
@@ -39,13 +50,16 @@
     {% endblock %}
   </main>
 
-
+{% if request.user.role != 'admin' %}
   <!-- Footer -->
   <footer class="w-full">
     {% include 'shared/footer.html' %}
   </footer>
-
+  {%else%}
+  {%include 'shared/admin_footer.html'%}
+{% endif %}
 </body>
+
 
 
 </html>

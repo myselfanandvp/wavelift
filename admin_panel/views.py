@@ -7,3 +7,11 @@ class AdminDashboard(View):
         return render(request,self.template_name,{})
     def post(self,request):
         pass
+    
+class ListProducts(View):
+    template_name="admin/product_list.html"
+    def get(self,request):
+        return render(request,self.template_name,{})
+    
+    def post(self,request):
+        pass

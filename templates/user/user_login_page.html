@@ -15,7 +15,7 @@
 
             <!-- Google Signup Button -->
             <div class="flex justify-center">
-                <button type="button"
+                <a href=""
                     class="flex items-center justify-center gap-2 bg-black p-3 text-white rounded-3xl w-60 hover:bg-gray-800 transition">
                     <svg width="24" viewBox="-3 0 262 262" xmlns="http://www.w3.org/2000/svg" fill="#fff">
                         <path
@@ -32,7 +32,7 @@
                             fill="#EB4335"></path>
                     </svg>
                     Login with Google
-                </button>
+                </a>
             </div>
             <div class="flex items-center gap-2">
                 <span class="flex-grow border-t border-gray-300"></span>
@@ -83,5 +83,19 @@
 
     </div>
 </main>
+
+
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    Swal.fire({
+        icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+        title: '{{ message.tags|title }}',
+        text: '{{ message|escapejs }}',
+        confirmButtonText: 'OK'
+    });
+    {% endfor %}
+    {% endif %}
+</script>
 
 {% endblock %}

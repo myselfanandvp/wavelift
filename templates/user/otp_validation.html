@@ -123,6 +123,29 @@
 
 
 </script>
+<script>
+{% if messages %}
+    {% for msg in messages %}
+        let timerInterval;
+        Swal.fire({
+            title: "OTP",
+            html: "{{ msg|escapejs }}",
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("Closed by the timer");
+            }
+        });
+    {% endfor %}
+{% endif %}
+</script>
 
 
 {% endblock %}

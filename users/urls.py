@@ -10,4 +10,5 @@ urlpatterns=[
     path('userlogout/',LogoutUser.as_view(),name="logout_user_url"),
     path('resendotp/',ResendOTP.as_view(),name="resendotp_url"),
     
+    
 ]

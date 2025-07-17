@@ -7,7 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
 
@@ -39,13 +42,12 @@ def generate_and_send_otp(**kwargs):
             )
    
 
-
-
 # Create your views here.
 
-
+@method_decorator(never_cache,name='dispatch')
 class LoginUser(View):
     template_name = "user/user_login_page.html"
+    admin_template_name=""
 
     def get(self, request):
         form = LoginForm()
@@ -59,13 +61,15 @@ class LoginUser(View):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(user=user, request=request)
+                if request.user.role=="admin":
+                    return redirect('admin_dashboard_url')
                 return redirect("index_page")
             else:
                 form.add_error("password", "Password or email is wrong")
 
         return render(request, self.template_name, {"form": form})
 
-
+@method_decorator(never_cache,name='dispatch')
 class SignupUser(View):
     template_name = 'user/user_signup_page.html'
 
@@ -80,23 +84,40 @@ class SignupUser(View):
             return redirect('login_user_url')
         return render(request, self.template_name, {"form": form})
 
-
+@method_decorator(never_cache,name='dispatch')
 class LogoutUser(View):
     def post(self, request):
+        if request.user.role=="admin":
+            logout(request)
+            return redirect("login_admin_url")
         logout(request)
         return redirect("login_user_url")
 
-
+@method_decorator(never_cache,name='dispatch')
 class ChangePassword(View):
     template_name = 'user/change_password.html'
 
     def get(self, request):
-        return render(request, self.template_name, {"form": Change_Password_Form})
+        form = Change_Password_Form()
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request):
-        pass
+        form = Change_Password_Form(request.POST)
+        if form.is_valid():
+            password,confirm_password = form.cleaned_data['password1'],form.cleaned_data['password2']
+            if password == confirm_password and (password is not None and confirm_password is not None):
+                email = request.session['user_email']
+                user = User.objects.filter(email=email).first()
+                user.set_password(form.cleaned_data['password1'])
+                user.save()
+                messages.success(request,"Your password has been updated successfully.")
+                return redirect("login_user_url")
+                     
+            form.add_error("password2", "Passwords do not match.")
+            
+        return render(request,self.template_name,{"form":form})
 
-
+@method_decorator(never_cache,name='dispatch')
 class OTP_Validation(View):
     template_name = 'user/otp_validation.html'
 
@@ -113,7 +134,7 @@ class OTP_Validation(View):
             form.add_error(None, "Entered otp is wrong")
         return render(request,self.template_name,{'form':form})
 
-
+@method_decorator(never_cache,name='dispatch')
 class ForgotPassword(View):
     template_name = 'user/reset_password_email.html'
 
@@ -130,19 +151,20 @@ class ForgotPassword(View):
                 request.session['user_email']=user.email
                 request.session['user_name']=user.username
                 generate_and_send_otp(request=request)
+                messages.success(request, "OTP has been sent to your email.")
                 return redirect('otp_validation_url')
 
             form.add_error("email", "Email you are given is wrong")
 
         return render(request, self.template_name, {"form": form})
 
-
+@method_decorator(never_cache,name='dispatch')
 class ResendOTP(View):
     def post(self, request):
         generate_and_send_otp(request=request)
         return JsonResponse({'status': 'success', 'message': 'OTP resent successfully!'})
 
-
+@method_decorator(never_cache,name='dispatch')
 class LoginAdmin(View):
     template_name = 'admin/admin_login.html'
 
@@ -163,10 +185,3 @@ class LoginAdmin(View):
             form.add_error("password", "Username or Password is wrong!")
         return render(request, self.template_name, {"form": form})
 
-
-class LogoutAdmin(View):
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        pass
