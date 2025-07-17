@@ -1,11 +1,11 @@
 from uuid import uuid4
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser,PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 
 
-class User(AbstractUser):
+class User(AbstractUser,PermissionsMixin):
 
     id = models.UUIDField(_('User ID'), default=uuid4, primary_key=True, editable=False)
     username=models.CharField(_('User Name'),null=True,blank=True,default=None)
@@ -66,3 +66,7 @@ class User(AbstractUser):
 
     def is_normal_user(self):
         return self.role == self.Roles.USER
+    
+    class Meta:
+        
+        db_table="users"
