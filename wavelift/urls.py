@@ -20,8 +20,11 @@ from django.urls import path,include
 urlpatterns = [
     path('django-sceret-admin/', admin.site.urls),
     path('',include('core.urls')),
-    path("user/",include('users.urls')),
-    path("admin/",include('admin_panel.urls')),
+    path("users/",include('users.urls')),
+    path("dashboard/",include('adminpanel.urls')),
     path("products/",include("products.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
+    path('accounts/', include('allauth.urls')),
+
+    
 ]

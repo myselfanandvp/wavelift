@@ -30,7 +30,7 @@
 
   <!-- Header -->
 
-  {%if not request.user.is_admin%}
+  {%if not request.user.is_superuser%}
   <header class="w-full">
     {% include 'shared/header.html' %}
   </header>
@@ -50,7 +50,7 @@
     {% endblock %}
   </main>
 
-{% if request.user.role != 'admin' %}
+{% if not request.user.is_superuser %}
   <!-- Footer -->
   <footer class="w-full">
     {% include 'shared/footer.html' %}
@@ -59,7 +59,6 @@
   {%include 'shared/admin_footer.html'%}
 {% endif %}
 </body>
-
 
 
 </html>

@@ -98,5 +98,24 @@
 
 </section>
 
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    Swal.fire({
+        icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+        title: '{{ message.tags|title }}',
+        text: '{{ message|escapejs }}',
+        showConfirmButton: false,
+        timer:1000,
+         showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOut'
+        }
+    });
+    {% endfor %}
+    {% endif %}
+</script>
 
 {%endblock%}

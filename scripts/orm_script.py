@@ -1,8 +1,9 @@
 from users.models import User
+from products.models import Product_images
 from pprint import pprint
 from django.db import connection
 
-u = User.objects.filter(email='anand@gmail.com').first()
-u.role='admin'
-u.save(update_fields=['role'])
+
+
+print(u)
 pprint(connection.queries)

@@ -8,7 +8,7 @@ from django.core.validators import RegexValidator
 class User(AbstractUser,PermissionsMixin):
 
     id = models.UUIDField(_('User ID'), default=uuid4, primary_key=True, editable=False)
-    username=models.CharField(_('User Name'),null=True,blank=True,default=None)
+    username = models.CharField(_('User Name'), max_length=150, null=True, blank=True, default=None)
     email = models.EmailField(_('Email Address'), unique=True, blank=False, null=False)
 
     phone_number = models.CharField(
@@ -66,6 +66,9 @@ class User(AbstractUser,PermissionsMixin):
 
     def is_normal_user(self):
         return self.role == self.Roles.USER
+    
+
+    
     
     class Meta:
         

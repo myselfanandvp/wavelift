@@ -3,6 +3,9 @@
 {%block title %} Sign Up {%endblock%}
 
 {% load static %}
+
+
+{% load socialaccount %}
 {% block content %}
 
 <main class="flex justify-center items-center min-h-screen px-4 py-8 bg-gray-200">
@@ -14,10 +17,9 @@
             <div class="text-center mb-4">
                 <p class="text-white font-bold text-3xl md:text-4xl">Sign Up</p>
             </div>
-
             <!-- Google Signup Button -->
             <div class="flex justify-center">
-                <button type="button"
+                <a href="{% provider_login_url 'google' %}"
                     class="flex items-center justify-center gap-2 bg-black p-3 text-white rounded-3xl w-60 hover:bg-gray-800 transition">
                     <svg width="24" viewBox="-3 0 262 262" xmlns="http://www.w3.org/2000/svg" fill="#fff">
                         <path
@@ -34,7 +36,7 @@
                             fill="#EB4335"></path>
                     </svg>
                     Signup with Google
-                </button>
+                </a>
             </div>
 
             <div class="flex items-center gap-2">
@@ -54,7 +56,7 @@
                 {% endif %}
             </div>
             {% endfor %}
-           
+
 
             <!-- Submit Button -->
             <div class="flex justify-center">
