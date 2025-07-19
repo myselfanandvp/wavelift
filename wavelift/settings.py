@@ -112,12 +112,12 @@ AUTHENTICATION_BACKENDS = [
 # Django allauth config
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
 ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
-
-
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 
 ROOT_URLCONF = 'wavelift.urls'

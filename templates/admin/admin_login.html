@@ -53,6 +53,7 @@
     </div>
 </main>
 
+
 <script>
     {% if messages %}
     {% for message in messages %}
@@ -60,9 +61,18 @@
         icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
         title: '{{ message.tags|title }}',
         text: '{{ message|escapejs }}',
-        confirmButtonText: 'OK'
+        showConfirmButton: false,
+        timer:3000,
+         showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOut'
+        }
     });
     {% endfor %}
     {% endif %}
 </script>
+
+
 {% endblock %}

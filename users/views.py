@@ -25,7 +25,7 @@ def generate_and_send_otp(**kwargs):
     # Compose email
     subject = "Your One-Time Password for Password Reset"
     message = f"""
-    Dear {request.session.get('user_name')},
+    Dear {request.session.get('user_name',"User")},
 
         Your one-time password (OTP) is: {otp}
 
@@ -96,10 +96,36 @@ class SignupUser(View):
     def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request,'Your account has been created successfully. Please log in to continue.')
-            return redirect('login_user_url')
+            request.session['user']=form.cleaned_data
+            request.session['user_email']=form.cleaned_data.get('email')
+            generate_and_send_otp(request=request)
+            messages.success(request,"Enter the OTP that was sent to your email.")
+            return redirect("signup_otp_url")
+            # messages.success(request,'Your account has been created successfully. Please log in to continue.')
+            # return redirect('login_user_url')
         return render(request, self.template_name, {"form": form})
+
+class Signup_OTP(View):
+    template_name = 'user/otp_validation.html'
+    def get (self,request):
+        form = OTPVerificationForm()
+        return render(request,self.template_name,{'form':form})
+    def post(self,request):
+        form = OTPVerificationForm(request.POST)
+        if form.is_valid():
+            session_otp= request.session.get('otp')
+            user_otp = form.get_otp()
+            if int(session_otp) == user_otp:   
+                form = SignupForm(request.session.get('user'))
+                form.save()
+                messages.success(request,"Your account as been created successfully. Please log in to continue.") 
+                request.session.pop('otp',None)   
+                request.session.pop('user',None)        
+                return redirect('login_user_url')
+            form.add_error(None, "Entered  OTP Is Invalid!")
+            return render(request,self.template_name,{'form':form})
+            
+
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -161,7 +187,7 @@ class OTP_Validation(View):
         form = OTPVerificationForm(request.POST)
         if form.is_valid():
             try:
-                otp_input = int(form.get_otp())
+                otp_input = form.get_otp()
             except (ValueError, TypeError):
                 form.add_error(None, "Invalid OTP format.")
                 return render(request, self.template_name, {'form': form})
