@@ -124,27 +124,23 @@
 
 </script>
 <script>
-{% if messages %}
-    {% for msg in messages %}
-        let timerInterval;
-        Swal.fire({
-            title: "OTP",
-            html: "{{ msg|escapejs }}",
-            timer: 5000,
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-            willClose: () => {
-                clearInterval(timerInterval);
-            }
-        }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-                console.log("Closed by the timer");
-            }
-        });
+    {% if messages %}
+    {% for message in messages %}
+    Swal.fire({
+        icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+        title: '{{ message.tags|title }}',
+        text: '{{ message|escapejs }}',
+        showConfirmButton: false,
+        timer:3000,
+         showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOut'
+        }
+    });
     {% endfor %}
-{% endif %}
+    {% endif %}
 </script>
 
 

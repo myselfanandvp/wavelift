@@ -1,6 +1,7 @@
 from django import forms
 from .models import User
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 import re
 
 # Reusable field styles
@@ -38,29 +39,24 @@ class SignupForm(forms.ModelForm):
         }
 
     def clean_password(self):
+        
         password = self.cleaned_data.get('password')
-
         if not password:
-            raise ValidationError("Password is required.")
+            raise ValidationError(_("Password is required."))
 
-        if len(password) < 8:
-            raise ValidationError("Password must be at least 8 characters long.")
-        if not re.search(r"[A-Z]", password):
-            raise ValidationError("Password must include at least one uppercase letter.")
-        if not re.search(r"[a-z]", password):
-            raise ValidationError("Password must include at least one lowercase letter.")
-        if not re.search(r"\d", password):
-            raise ValidationError("Password must include at least one digit.")
-        if not re.search(r"[^\w\s]", password):
-            raise ValidationError("Password must include at least one special character.")
-
+        # Password complexity validation
+        password_regex = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+        if not re.match(password_regex, password):
+            raise ValidationError(
+                _("Password must include at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long."),
+                code='password_not_complex'
+            )
         return password
 
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_pass')
-
+        confirm_password = cleaned_data.get('confirm_pass')                
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_pass', "Passwords do not match.")
 

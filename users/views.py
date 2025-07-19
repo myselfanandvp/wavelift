@@ -97,6 +97,7 @@ class SignupUser(View):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Your account has been created successfully. Please log in to continue.')
             return redirect('login_user_url')
         return render(request, self.template_name, {"form": form})
 
