@@ -28,3 +28,12 @@ class Policy(View):
     template_name = "core/privacy_policy.html"
     def get (self,request):
         return render(request,self.template_name,{})
+    
+    
+class PageNotFound(View):
+    template_name = "shared/page_notfound.html"
+    
+    def get(self,request):
+        return render(request,self.template_name,{})
+    
+

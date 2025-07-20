@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime,timedelta
 
 
 # OTP generator helper
@@ -21,11 +21,11 @@ def generate_and_send_otp(**kwargs):
     request.session['otp'] = otp
     request.session['otp_created_at'] = datetime.now().isoformat()
     request.session.set_expiry(300)  # Enforce 5-minute expiry
-
+    user = request.session.get("user_name") or "User"
     # Compose email
     subject = "Your One-Time Password for Password Reset"
     message = f"""
-    Dear {request.session.get('user_name',"User")},
+    Dear {user},
 
         Your one-time password (OTP) is: {otp}
 
@@ -62,7 +62,7 @@ def get_session_user(request):
 @method_decorator(never_cache, name='dispatch')
 class LoginUser(View):
     template_name = "user/user_login_page.html"
-    admin_template_name = ""
+  
 
     def get(self, request):
         form = LoginForm()
@@ -87,6 +87,7 @@ class LoginUser(View):
 
 @method_decorator(never_cache, name='dispatch')
 class SignupUser(View):
+    
     template_name = 'user/user_signup_page.html'
 
     def get(self, request):
@@ -99,34 +100,70 @@ class SignupUser(View):
             request.session['user']=form.cleaned_data
             request.session['user_email']=form.cleaned_data.get('email')
             generate_and_send_otp(request=request)
-            messages.success(request,"Enter the OTP that was sent to your email.")
+            request.session['otp_created_at'] = datetime.now().isoformat()
+            messages.success(request,"Enter you otp that sented to you email")
             return redirect("signup_otp_url")
             # messages.success(request,'Your account has been created successfully. Please log in to continue.')
             # return redirect('login_user_url')
         return render(request, self.template_name, {"form": form})
-
+    
+    
+    
+@method_decorator(never_cache, name='dispatch')
 class Signup_OTP(View):
     template_name = 'user/otp_validation.html'
     def get (self,request):
         form = OTPVerificationForm()
         return render(request,self.template_name,{'form':form})
-    def post(self,request):
+    
+    def post(self, request):
         form = OTPVerificationForm(request.POST)
         if form.is_valid():
-            session_otp= request.session.get('otp')
+            session_otp = request.session.get('otp')
             user_otp = form.get_otp()
-            if int(session_otp) == user_otp:   
+            
+            if user_otp is None:
+                form.add_error(None,"The OTP format is invalid. Please enter 6 digits.")
+                return render(request,self.template_name,{'form':form})
+            
+            # Track attempts
+            attempts = request.session.get('otp_attempts', 0)
+            if attempts >= 5:
+                form.add_error(None, "Too many incorrect attempts. Please request a new OTP.")
+                return render(request, self.template_name, {"form": form})
+            
+            # Check if OTP is missing
+            if not session_otp or not user_otp:
+                form.add_error(None, "OTP has expired or is invalid. Please request a new one.")
+                return render(request, self.template_name, {'form': form})
+
+            # Check for expiration (5 minutes)
+            otp_created_at_str = request.session.get('otp_created_at')
+            if otp_created_at_str:
+                otp_created_at = datetime.fromisoformat(otp_created_at_str)
+                if datetime.now() > otp_created_at + timedelta(minutes=5):
+                    request.session.pop('otp', None)
+                    request.session.pop('otp_created_at', None)
+                    form.add_error(None, "OTP has expired. Please request a new one.")
+                    return render(request, self.template_name, {'form': form})
+            else:
+                form.add_error(None, "OTP session info is missing. Please request a new one.")
+                return render(request, self.template_name, {'form': form})
+
+            # Check if OTP matches
+            if int(session_otp) == user_otp:
                 form = SignupForm(request.session.get('user'))
                 form.save()
-                messages.success(request,"Your account as been created successfully. Please log in to continue.") 
-                request.session.pop('otp',None)   
-                request.session.pop('user',None)        
+                messages.success(request, "Your account has been created successfully. Please log in to continue.")
+                request.session.pop('otp', None)
+                request.session.pop('otp_created_at', None)
+                request.session.pop('user', None)
                 return redirect('login_user_url')
-            form.add_error(None, "Entered  OTP Is Invalid!")
-            return render(request,self.template_name,{'form':form})
-            
 
+            request.session['otp_attempts'] = attempts + 1
+            form.add_error(None, "Entered OTP is incorrect.")
 
+        return render(request, self.template_name, {'form': form})
 
 @method_decorator(never_cache, name='dispatch')
 class LogoutUser(LoginRequiredMixin,View):
@@ -178,50 +215,62 @@ class OTP_Validation(View):
 
     def get(self, request):
         if not request.session.get('user_email'):
-            return redirect('forgot_password_url')  # or your OTP page
-        
+            return redirect('forgot_password_url')
+
         form = OTPVerificationForm()
         return render(request, self.template_name, {"form": form})
 
     def post(self, request):
         form = OTPVerificationForm(request.POST)
-        if form.is_valid():
-            try:
-                otp_input = form.get_otp()
-            except (ValueError, TypeError):
-                form.add_error(None, "Invalid OTP format.")
-                return render(request, self.template_name, {'form': form})
+
+        if form.is_valid():            
+            otp_input = form.get_otp()
+            if otp_input is None:
+                form.add_error(None,"The OTP format is invalid. Please enter 6 digits.")
+                return render(request,self.template_name,{'form':form})
 
             session_otp = request.session.get('otp')
-            otp_create_at = request.session.get('otp_created_at')
-
-            if not session_otp or not otp_create_at:
-                form.add_error(
-                    None, "OTP session expired. Please request a new one.")
+            otp_created_at_str = request.session.get('otp_created_at')\
+                
+            
+            # Check if session data is missing
+            if not session_otp or not otp_created_at_str:
+                form.add_error(None, "OTP session info is missing. Please request a new one.")
                 return render(request, self.template_name, {'form': form})
-            otp_time = datetime.fromisoformat(otp_create_at)
-            if (datetime.now() - otp_time).total_seconds() > 300:
-                form.add_error(
-                    None, "OTP has expired. Please request a new one.")
-                return render(request, self.template_name, {"form": form})
 
+            # Parse the stored OTP time
+            try:
+                otp_created_at = datetime.fromisoformat(otp_created_at_str)
+            except ValueError:
+                form.add_error(None, "Corrupted OTP timestamp. Please request a new one.")
+                return render(request, self.template_name, {'form': form})
+
+            # Check for expiration (5 minutes)
+            if datetime.now() > otp_created_at + timedelta(minutes=5):
+                request.session.pop('otp', None)
+                request.session.pop('otp_created_at', None)
+                form.add_error(None, "OTP has expired. Please request a new one.")
+                return render(request, self.template_name, {'form': form})
+
+            # Check attempts
             attempts = request.session.get('otp_attempts', 0)
-
             if attempts >= 5:
-                form.add_error(
-                    None, "Too many attempts. Please request a new OTP.")
+                form.add_error(None, "Too many incorrect attempts. Please request a new OTP.")
                 return render(request, self.template_name, {"form": form})
 
-            if int(session_otp) == otp_input:
+            # Compare OTPs
+            if str(session_otp) == str(otp_input):
+                # OTP is valid
                 request.session.pop('otp', None)
                 request.session.pop('otp_created_at', None)
                 request.session.pop('otp_attempts', None)
                 return redirect('change_password_url')
             else:
+                # OTP is wrong
                 request.session['otp_attempts'] = attempts + 1
-                form.add_error(None, "Entered otp is wrong")
-        return render(request, self.template_name, {'form': form})
+                form.add_error(None, "Entered OTP is incorrect.")
 
+        return render(request, self.template_name, {'form': form})
 
 @method_decorator(never_cache, name='dispatch')
 class ForgotPassword(View):

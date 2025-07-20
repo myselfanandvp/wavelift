@@ -52,7 +52,8 @@
                 <form method="post" class="flex gap-2 justify-center items-center text-gray-300">
                     {% csrf_token %}
                     <span>Didn’t receive the OTP?</span>
-                    <button id="resendotp" type="button" class="text-blue-400 hover:underline ">Resend</button>
+                    <button id="resendotp" type="button" onclick="{resend_btn()}"
+                        class="text-blue-400 hover:underline">Resend</button>
                 </form>
             </div>
 
@@ -67,7 +68,7 @@
         </div>
 
 
-        
+
         <!-- Image Section -->
         <div class="hidden md:flex justify-center items-center w-full">
             <div class="w-full h-96 max-w-md rounded-3xl overflow-hidden">
@@ -89,7 +90,6 @@
         const resendBtn = document.getElementById('resendotp');
         const timerSpan = document.getElementById('timer');
         resendBtn.disabled = true;
-        resendBtn.classList.add("hidden")
         document.getElementById('otp-timer').style.display = 'block';
 
         countdownInterval = setInterval(() => {
@@ -105,8 +105,13 @@
         }, 1000);
     }
 
+    function resend_btn() {
+        document.getElementById('resendotp').classList.add("hidden");
+    }
+
 
     document.getElementById('resendotp').addEventListener('click', () => {
+
         fetch('{% url "resendotp_url" %}', {
             method: 'POST',
             headers: {
@@ -117,7 +122,15 @@
             .then(response => response.json())
             .then(data => {
                 startCountdown()
-                alert(data.message)
+
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -135,8 +148,8 @@
         title: '{{ message.tags|title }}',
         text: '{{ message|escapejs }}',
         showConfirmButton: false,
-        timer:3000,
-         showClass: {
+        timer: 3000,
+        showClass: {
             popup: 'animate__animated animate__fadeIn'
         },
         hideClass: {

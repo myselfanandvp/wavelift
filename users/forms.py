@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
 
+from django.contrib import messages
+
 # Reusable field styles
 input_field_style = {
     'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
@@ -14,11 +16,13 @@ image_field_style = {
 }
 
 field_style = {
-        'class': 'w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-center text-xl sm:text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-2 sm:p-3 md:p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
-        'inputmode': 'numeric',
-        'autocomplete': 'off',
-        "maxlength": "1",
-    }
+    'class': 'w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-center text-xl sm:text-2xl font-extrabold text-slate-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded p-2 sm:p-3 md:p-4 outline-none focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100',
+    'inputmode': 'numeric',
+    'autocomplete': 'off',
+    "maxlength": "1",
+    "pattern": "[0-9]*"
+
+}
 
 
 class SignupForm(forms.ModelForm):
@@ -39,7 +43,7 @@ class SignupForm(forms.ModelForm):
         }
 
     def clean_password(self):
-        
+
         password = self.cleaned_data.get('password')
         if not password:
             raise ValidationError(_("Password is required."))
@@ -56,7 +60,7 @@ class SignupForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_pass')                
+        confirm_password = cleaned_data.get('confirm_pass')
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_pass', "Passwords do not match.")
 
@@ -69,7 +73,7 @@ class SignupForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-   
+
     email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={**input_field_style, "placeholder": "Email address"})
@@ -80,7 +84,7 @@ class LoginForm(forms.Form):
 
 
 class Change_Password_Form(forms.Form):
-   
+
     password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={**input_field_style, "placeholder": "New password", "autocomplete": "off"}))
     password2 = forms.CharField(widget=forms.PasswordInput(
@@ -88,7 +92,6 @@ class Change_Password_Form(forms.Form):
 
 
 class OTPVerificationForm(forms.Form):
-   
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -100,16 +103,17 @@ class OTPVerificationForm(forms.Form):
             )
 
     def get_otp(self):
-        try:
-            return int(''.join([
-                self.cleaned_data.get(f'otp_{i}', '') for i in range(1, 7)
-            ]))
-        except ValueError:
-            raise ValidationError("Invalid OTP input.")
+        otp_str = ''.join([
+            self.cleaned_data.get(f'otp_{i}', '') for i in range(1, 7)
+        ])
 
+        if not otp_str.isdigit():
+            return None  # Invalid format
+
+        return int(otp_str)
 
 class ResetPasswordForm(forms.Form):
- 
+
     email = forms.EmailField(widget=forms.EmailInput(
         attrs={**input_field_style, "placeholder": "Enter your email id"}))
 
@@ -117,7 +121,7 @@ class ResetPasswordForm(forms.Form):
 # Admin Forms
 
 class Admin_Login_Form(forms.Form):
-  
+
     email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={**input_field_style, "placeholder": "Email address"})
@@ -126,5 +130,3 @@ class Admin_Login_Form(forms.Form):
         widget=forms.PasswordInput(
             attrs={**input_field_style, "placeholder": "Enter your password"})
     )
-
-
