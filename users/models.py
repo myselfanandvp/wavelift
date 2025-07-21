@@ -24,7 +24,7 @@ class User(AbstractUser,PermissionsMixin):
         ]
     )
     
-    is_delete = models.BooleanField(_("Is Deleted"),default=0)
+
 
     profile_img = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 

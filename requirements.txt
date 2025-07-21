@@ -10,8 +10,11 @@ cookiecutter==2.6.0
 cryptography==45.0.5
 defusedxml==0.7.1
 Django==5.2.4
+django-allauth==65.10.0
 django-browser-reload==1.18.0
 django-extensions==4.1
+django-filter==25.1
+django-shortcuts==1.6
 django-tailwind==4.2.0
 idna==3.10
 Jinja2==3.1.6
@@ -32,7 +35,6 @@ requests==2.32.4
 requests-oauthlib==2.0.0
 rich==14.0.0
 six==1.17.0
-social-auth-app-django==5.5.1
 social-auth-core==4.7.0
 sqlparse==0.5.3
 text-unidecode==1.3

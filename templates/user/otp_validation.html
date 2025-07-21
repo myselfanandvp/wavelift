@@ -159,6 +159,34 @@
     {% endfor %}
     {% endif %}
 </script>
+<script>
+    const inputs = document.querySelectorAll('.otp-input');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.inputType === 'insertText' && e.target.value.length === 1) {
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            }
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const paste = e.clipboardData.getData('text').slice(0, inputs.length).split('');
+            paste.forEach((char, i) => {
+                inputs[i].value = char;
+            });
+            inputs[paste.length - 1].focus();
+        });
+    });
+</script>
 
 
 

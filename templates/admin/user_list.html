@@ -23,7 +23,7 @@
                         href="{% url 'user_list_url' %}">Rest Filter</a>
 
                 </div>
-                <div class="flex justify-between gap-2 flex-col lg:flex-row bg-gray-300 mb-4 rounded-2xl p-4">
+                <div class="flex justify-between gap-2 flex-col lg:flex-row bg-gray-200 mb-4 rounded-2xl p-4">
                     {%for field in myFilter.form%}
                     <div class="flex flex-col lg:items-center text-gray-600 ">
                         <div class=" text-gray-700 px-4 mb-4 rounded-2xl">
@@ -61,7 +61,7 @@
                     </thead>
                     <tbody>
 
-                        {%for user in users%}
+                        {%for user in pages%}
 
 
                         <tr class="border-b">
@@ -111,28 +111,22 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
-            <div class="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-500 text-sm">Show results:</span>
-                    <select class="border rounded-md px-2 py-1 text-sm">
-                        <option>10</option>
-                        <option>20</option>
-                        <option>50</option>
-                    </select>
+      
+    <div class="flex items-center space-x-2 mt-2 justify-end">
+                    {% if pages.has_previous %}
+                    <a href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">First</a>
+                    <a href="?page={{ pages.previous_page_number }}& {{request.GET.urlencode}}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Previous</a>
+                    {% endif %}
+                    <span class="px-3 py-1 text-sm">Page {{ pages.number }} of {{ pages.paginator.num_pages }}</span>
+                    {% if pages.has_next %}
+                    <a href="?page={{ pages.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %} & {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Next</a>
+                    <a href="?page={{ pages.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Last</a>
+                    {% endif %}
                 </div>
-                <div class="flex items-center space-x-1">
-                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">&lt;</button>
-                    <button class="px-3 py-1 border rounded-md bg-blue-600 text-white text-sm">1</button>
-                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">2</button>
-                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">3</button>
-                    <span class="px-3 py-1 text-sm">...</span>
-                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">10</button>
-                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">&gt;</button>
-                </div>
-            </div>
-        </div>
     </main>
+
+
 </div>
+
 
 {% endblock %}
