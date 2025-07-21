@@ -1,11 +1,15 @@
 from users.models import User
-from products.models import Product_images
+from products.models import Product
 from pprint import pprint
 from django.db import connection
 from datetime import datetime
 from time import sleep
 
-user = User.objects.filter().order_by('-created_at')
+product = Product.objects.prefetch_related('images')
 
-print(user)
+for i in product:
+    print(i.name,list(i.images.all().values("image")))
+
+
+
 pprint(connection.queries)
