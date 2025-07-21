@@ -5,7 +5,7 @@ from django.db import connection
 from datetime import datetime
 from time import sleep
 
-user = User.objects.all().values('email','phone_number','is_active','username','id')
+user = User.objects.filter().order_by('-created_at')
 
 print(user)
 pprint(connection.queries)

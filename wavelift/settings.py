@@ -56,11 +56,13 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'django_extensions',
     'core',
+    'django_filters',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    
 ]
 
 
