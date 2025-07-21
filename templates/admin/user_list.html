@@ -1,10 +1,119 @@
-2{%extends 'base.html'%}
+{% extends 'shared/base.html' %}
+{% block content %}
+
+<div class="flex flex-col lg:flex-row">
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 lg:p-6 overflow-auto transition-all duration-300" id="main-content">
+        <div class="w-full max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800">
+                    Customer Management
+                </h2>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <input type="text" placeholder="Search users"
+                            class="w-32 sm:w-40 lg:w-60 pl-8 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <svg class="absolute left-2 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    <!-- Add New User -->
+                    <button
+                        class="flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                        <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 1H6V6H1V10H6V15H10V10H15V6H10V1Z" fill="#ffffff" />
+                        </svg>
+                        New User
+                    </button>
+                </div>
+            </div>
 
 
-{%block content%}
 
+            <!-- Users Table -->
+            <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                <table class="w-full min-w-[640px] text-center text-sm">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Customer ID</th>
+                            <th class="px-4 py-3">Email</th>                 
+                            <th class="px-4 py-3">Status</th>                       
+                            <th class="px-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
+                        {%for user in users%}
 
+                   
+                        <tr class="border-b">
+                            <td class="px-4 py-3">{{user.username}}</td>
+                            <td class="px-4 py-3">{{user.id}}</td>
+                            <td class="px-4 py-3">{{user.email}}</td>
+                            
+                            <td class="px-4 py-3">
+                                {%if user.is_active%}
+                                <span class="inline-block px-2 py-1 text-green-600 bg-green-100 rounded-full text-xs">
 
-{%endblock%}
+                                    Active
+                                </span>
+                                {%else%}
+                                <span class="inline-block px-2 py-1 text-red-600 bg-red-100 rounded-full text-xs">
 
+                                    Not Active
+                                </span>
+
+                                {%endif%}
+                            </td>
+                     
+                            <td class="px-4 py-3">
+                                <div class="flex justify-center gap-2 flex-wrap text-sm">
+                                    <a href="{% url 'user_details_url' user.id %}" class="text-green-600 hover:underline">View</a>
+                                    <!-- <form method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                    </form> -->
+                                </div>
+                            </td>
+                        </tr>
+                       
+                        {%endfor%}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-500 text-sm">Show results:</span>
+                    <select class="border rounded-md px-2 py-1 text-sm">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">&lt;</button>
+                    <button class="px-3 py-1 border rounded-md bg-blue-600 text-white text-sm">1</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">2</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">3</button>
+                    <span class="px-3 py-1 text-sm">...</span>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">10</button>
+                    <button class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">&gt;</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+{% endblock %}

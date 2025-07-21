@@ -1,11 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 
 # Create your views here.
 
 class  HomePage(View):
     template_name= 'core/index.html'
+
     def get(self,request):
+        if request.user.is_superuser:
+            return redirect("admin_dashboard_url")
         return render(request,self.template_name,{})
     
 class Contactus(View):

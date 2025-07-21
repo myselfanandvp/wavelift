@@ -12,6 +12,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from datetime import datetime,timedelta
+from django.http import HttpResponse
 
 
 # OTP generator helper
@@ -62,9 +63,14 @@ def get_session_user(request):
 @method_decorator(never_cache, name='dispatch')
 class LoginUser(View):
     template_name = "user/user_login_page.html"
-  
+    
 
     def get(self, request):
+        if request.user.is_authenticated and request.user.is_superuser:
+            return redirect("admin_dashboard_url")
+        elif request.user.is_authenticated:
+            return redirect("index_page")
+        
         form = LoginForm()
         return render(request, self.template_name, {'form': form})
 
@@ -309,9 +315,13 @@ class ResendOTP(View):
 # Admin Views
 @method_decorator(never_cache, name='dispatch')
 class LoginAdmin(View):
+ 
     template_name = 'admin/admin_login.html'
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("admin_dashboard_url")
+        
         form = Admin_Login_Form()
         return render(request, self.template_name, {"form": form})
 
@@ -320,10 +330,28 @@ class LoginAdmin(View):
         if form.is_valid():
             email, password = form.cleaned_data.get(
                 'email'), form.cleaned_data.get('password')
-            print(password, email)
+        
             admin = authenticate(request, username=email, password=password)
             if admin is not None:
                 login(request, admin)
                 return redirect('admin_dashboard_url')
             form.add_error("password", "Username or Password is wrong!")
         return render(request, self.template_name, {"form": form})
+
+
+@method_decorator(never_cache, name='dispatch')
+class BlockUser(LoginRequiredMixin,View):
+    
+    def post(self,request,id):
+        user = User.objects.filter(id=id).first()
+        if user and user.is_active:
+            user.is_active=0
+            user.save(update_fields=['is_active'])
+            return JsonResponse({"message":"User is blocked"})
+        elif user and not user.is_active:
+            user.is_active=1
+            user.save(update_fields=['is_active'])
+            return JsonResponse({"message":"User is Unblocked"})
+
+        return JsonResponse({"message":"Something went wrong"})
+

@@ -79,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware', 
     'allauth.account.middleware.AccountMiddleware',
+     'wavelift.middleware.Custom404Middleware',  
   
      
 ]
@@ -200,3 +201,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     # "/var/www/static/",
 ]
+
+
+
+MEDIA_ROOT = BASE_DIR / 'media'

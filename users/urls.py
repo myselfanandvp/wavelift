@@ -1,4 +1,4 @@
-from .views import SignupUser,LoginUser,ChangePassword,OTP_Validation,ForgotPassword,LogoutUser,ResendOTP,LoginAdmin,Signup_OTP
+from .views import SignupUser,LoginUser,ChangePassword,OTP_Validation,ForgotPassword,LogoutUser,ResendOTP,LoginAdmin,Signup_OTP,BlockUser
 from django.urls import path
 urlpatterns=[
     path('signup/',SignupUser.as_view(),name="signup_user_url"),
@@ -11,6 +11,8 @@ urlpatterns=[
     path('forgot-password/',ForgotPassword.as_view(),name="forgot_password_url"),    
     # Admin Urls
     path('admin/login/',LoginAdmin.as_view(),name="login_admin_url"),
+    path('admin/block/<uuid:id>',BlockUser.as_view(),name="block_admin_url"),
+   
     
     
 ]
