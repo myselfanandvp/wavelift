@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import ProductForm,ProductBrandForm,ProductImagesForm,ProductCategoryForm,ProductReviewForm
 from django.views import View
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -16,5 +17,6 @@ class CreateProudctView(View):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
+        return HttpResponse(f"Product created {form.cleaned_data.get("name")}")
             
             
