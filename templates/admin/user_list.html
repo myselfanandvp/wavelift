@@ -17,9 +17,9 @@
             <form>
                 <div class="flex w-full justify-end">
                     <button
-                        class="text-white  bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
+                        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
                         type="submit">Apply Filter</button>
-                    <a class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
+                    <a class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
                         href="{% url 'user_list_url' %}">Rest Filter</a>
 
                 </div>
@@ -113,14 +113,14 @@
 
       
     <div class="flex items-center space-x-2 mt-2 justify-end">
+        <span class="px-3 py-1 text-sm">Page {{ pages.number }} of {{ pages.paginator.num_pages }}</span>
                     {% if pages.has_previous %}
-                    <a href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">First</a>
-                    <a href="?page={{ pages.previous_page_number }}& {{request.GET.urlencode}}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Previous</a>
+                    <a href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">First</a>
+                    <a href="?page={{ pages.previous_page_number }}& {{request.GET.urlencode}}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Previous</a>
                     {% endif %}
-                    <span class="px-3 py-1 text-sm">Page {{ pages.number }} of {{ pages.paginator.num_pages }}</span>
                     {% if pages.has_next %}
-                    <a href="?page={{ pages.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %} & {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Next</a>
-                    <a href="?page={{ pages.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Last</a>
+                    <a href="?page={{ pages.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %} & {{request.GET.urlencode}}" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Next</a>
+                    <a href="?page={{ pages.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Last</a>
                     {% endif %}
                 </div>
     </main>

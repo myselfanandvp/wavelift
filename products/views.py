@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms import ProductForm, ProductBrandForm, ProductImagesForm, ProductCategoryForm, ProductReviewForm
 from django.views import View
 from django.http import HttpResponse,HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Product
+from .filters import ProductFilter
+from django.core.paginator import Paginator
 # Create your views here.
 
 def check_permission(**kwargs):
@@ -11,9 +14,10 @@ def check_permission(**kwargs):
         return HttpResponseForbidden("You do not have permission to access this page.")
 
 
+# Product Views
 
-
-class CreateProudctView(View):
+class CreateProudctView(LoginRequiredMixin,View):
+    login_url="login_admin_url"
     template_name = "products/create_product.html"
 
     def get(self, request):
@@ -30,12 +34,26 @@ class CreateProudctView(View):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
-        return HttpResponse(f"Product created {form.cleaned_data.get("name")}")
+        return redirect("list_products_url")
+    
+    
+class ListProductView(View):
+    template_name="products/list_products.html"
+    def get(self,request):
+        products = Product.objects.all()
+        filter = ProductFilter(request.GET,queryset=products)   
+        page_number = request.GET.get('page')  # Use 'page' as the query parameter
+        paginator = Paginator(filter.qs, per_page=3)
+        page_obj = paginator.get_page(page_number)  # Get the page object
+     
+        return render(request,self.template_name,{'products':filter.qs,"myFilter":filter,"pages":page_obj})
+        
+    def post(self,request):
+        pass
 
 
-"""
-Category crud operations
-"""
+# Category Views
+
 
 
 class CreateCategory(LoginRequiredMixin,View):
@@ -74,3 +92,6 @@ class DeleteCategory(View):
 
     def post(self, request):
         pass
+    
+    
+    

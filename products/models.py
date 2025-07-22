@@ -57,6 +57,21 @@ class Brand(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+    
+class Color(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    name = models.CharField(max_length=50, unique=True)
+    hex_code = models.CharField(max_length=7, help_text="Hex code (e.g. #FFFFFF)")
+
+    class Meta:
+        db_table = 'colors'
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colors'
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.name} ({self.hex_code})"
 
 class Product(models.Model):
     STATUS_CHOICES = (
@@ -72,6 +87,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     is_deleted = models.BooleanField(default=False)
+    colors = models.ManyToManyField(Color, related_name='products', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     stock_qty = models.IntegerField(validators=[MinValueValidator(0)])
