@@ -1,11 +1,13 @@
-from django.shortcuts import render,redirect
-from .forms import ProductForm, ProductBrandForm, ProductImagesForm, ProductCategoryForm, ProductReviewForm
+from django.shortcuts import render,redirect,get_object_or_404
+from .forms import ProductForm, ProductImagesForm, ProductCategoryForm
+from .models import Category
 from django.views import View
 from django.http import HttpResponse,HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Product
-from .filters import ProductFilter
+from .models import Product,ProductImage
+from .filters import ProductFilter,CategoryFilter
 from django.core.paginator import Paginator
+from django.contrib import messages
 # Create your views here.
 
 def check_permission(**kwargs):
@@ -19,7 +21,6 @@ def check_permission(**kwargs):
 class CreateProudctView(LoginRequiredMixin,View):
     login_url="login_admin_url"
     template_name = "products/create_product.html"
-
     def get(self, request):
         premission=check_permission(request=request)
         if premission:
@@ -28,18 +29,37 @@ class CreateProudctView(LoginRequiredMixin,View):
         form = ProductForm()
         product_images = ProductImagesForm()
 
-        return render(request, self.template_name, {"form": form})
+        return render(request, self.template_name, {"form": form,"product_images_form":product_images})
+    
 
-    def post(self, request):
+    def post(self, request):        
         form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("list_products_url")
+        product_images_form = ProductImagesForm(request.POST, request.FILES)
+        if product_images_form.is_valid() and form.is_valid():
+            product= form.save(commit=False)
+            product.save()
+            # Handle colors as a single Color instance or None
+            product.colors.set(form.cleaned_data['colors'])
+            images=product_images_form.cleaned_data.get('images',[])
+            for index,image in enumerate(images):
+                product_image=ProductImage(
+                    product=product,
+                    image=image,
+                    is_primary=(index==0),
+                )
+                product_image.save()
+            return redirect("list_products_url")          
+                
+        return render(request, self.template_name, {"form": form,"product_images_form":product_images_form})
+     
     
     
 class ListProductView(View):
     template_name="products/list_products.html"
     def get(self,request):
+        premission=check_permission(request=request)
+        if premission:
+            return premission
         products = Product.objects.all()
         filter = ProductFilter(request.GET,queryset=products)   
         page_number = request.GET.get('page')  # Use 'page' as the query parameter
@@ -52,9 +72,66 @@ class ListProductView(View):
         pass
 
 
+
+
+class EditProductView(LoginRequiredMixin, View):
+    login_url = "login_admin_url"
+    template_name = "products/edit_product.html"  
+
+    def get(self, request, product_id):
+        # Check permissions
+        permission = check_permission(request=request)
+        if permission:
+            return permission
+
+        # Get the existing product
+        product = get_object_or_404(Product, id=product_id)
+        # Populate forms with existing data
+        form = ProductForm(instance=product)
+        product_images_form = ProductImagesForm()
+
+        return render(request, self.template_name, {
+            "form": form,
+            "product_images_form": product_images_form,
+            "product": product
+        })
+
+    def post(self, request, product_id):
+        # Get the existing product
+        product = get_object_or_404(Product, id=product_id)
+        # Initialize forms with POST data and instance
+        form = ProductForm(request.POST, instance=product)
+        product_images_form = ProductImagesForm(request.POST, request.FILES)
+
+        if product_images_form.is_valid() and form.is_valid():
+            # Save updated product details
+            product = form.save(commit=False)
+            product.save()
+            # Update colors
+            product.colors.set(form.cleaned_data['colors'])
+
+            # Handle images
+            images = product_images_form.cleaned_data.get('images', [])
+            if images:  # Only update images if new ones are provided
+                # Optionally, delete existing images (uncomment if needed)
+                # ProductImage.objects.filter(product=product).delete()
+                for index, image in enumerate(images):
+                    product_image = ProductImage(
+                        product=product,
+                        image=image,
+                        is_primary=(index == 0),
+                    )
+                    product_image.save()
+
+            return redirect("list_products_url")
+
+        return render(request, self.template_name, {
+            "form": form,
+            "product_images_form": product_images_form,
+            "product": product
+        })
+
 # Category Views
-
-
 
 class CreateCategory(LoginRequiredMixin,View):
     template_name = "products/create_category.html"
@@ -64,34 +141,69 @@ class CreateCategory(LoginRequiredMixin,View):
         if premission:
             return premission
         form = ProductCategoryForm()
-        return render(request,self.template_name,{"form":form})      
+        return render(request,self.template_name,{"form":form,'iscreate':True})      
 
     def post(self, request):
         form = ProductCategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Category was saved")
+            return redirect("list_category_url")
         form.add_error(None,"Category is not saved")
-        return render(request,self.template_name,{"form":form})
-
+        return render(request,self.template_name,{"form":form,'iscreate':True})
+    
+     
+class ListCategory(LoginRequiredMixin,View):
+    template_name = 'products/list_category.html'
+    def get(self,request):
+        premission=check_permission(request=request)
+        if premission:
+            return premission
+        
+        categorys = Category.objects.all().order_by("-created_at")
+        page_number = request.GET.get('page')  # Use 'page' as the query parameter
+        filter = CategoryFilter(request.GET,queryset=categorys) 
+        paginator = Paginator(filter.qs, per_page=10)
+        page_obj = paginator.get_page(page_number)  # Get the page object
+        return render(request,self.template_name,{'categorys':filter.qs,'filter':filter,"pages":page_obj})
+        
+   
 
 class EditCategory(View):
-    template_name = "products/edit_category.html"
+    template_name = "products/create_category.html"
+    def get(self, request,id):
+        premission=check_permission(request=request)
+        if premission:
+            return premission
+        category = get_object_or_404(Category,id=id)
+        form = ProductCategoryForm(instance=category)
+        return render(request,self.template_name,{'form':form})
 
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        pass
+    def post(self, request,id):
+        permission = check_permission(request=request)
+        if permission:
+            return permission
+        category = get_object_or_404(Category, id=id)
+        form = ProductCategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('list_category_url')
+        return render(request, self.template_name, {'form': form})
 
 
 # Soft delete on category
-class DeleteCategory(View):
-    def get(self, request):
-        pass
+class DeleteCategory(LoginRequiredMixin,View):   
+    def post(self, request,id):
+        premission=check_permission(request=request)
+        if premission:
+            return premission
+        category_delete= Category.objects.filter(id=id).first()         
+        if category_delete.status == 0:
+            category_delete.status = 1
+        else:
+            category_delete.status = 0         
+        category_delete.save(update_fields=['status'])
+        return redirect("list_category_url")
 
-    def post(self, request):
-        pass
     
     
     

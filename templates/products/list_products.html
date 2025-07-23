@@ -13,10 +13,12 @@
 
 
             </div>
-<div class="flex  justify-start">
+            <div class="flex  justify-start">
 
-    <a href="{%url 'create_proudct_url' %}" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Add New Product</a>
-</div>
+                <a href="{%url 'create_proudct_url' %}"
+                    class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Add
+                    New Product</a>
+            </div>
 
             <form>
                 <div class="flex w-full justify-end">
@@ -64,6 +66,8 @@
                             <th class="px-4 py-3">Stock</th>
                             <th class="px-4 py-3">Active</th>
                             <th class="px-4 py-3">Added On</th>
+                            <th class="px-4 py-3">Color</th>
+                            <th class="px-4 py-3">Images</th>
                             <th class="px-4 py-3">Action</th>
                         </tr>
                     </thead>
@@ -79,12 +83,39 @@
                             <td class="px-4 py-3">{{product.category}}</td>
                             <td class="px-4 py-3">{{product.brand}}</td>
                             <td class="px-4 py-3">{{product.stock_qty}}</td>
-                            <td class="px-4 py-3">{{product.status|yesno:"Active,No Active"}}</td>
-                            <td class="px-4 py-3">{{product.created_at}}</td>                       
+                           
+                            <td class="px-4 py-3">
+                                {%if not product.is_deleted%}
+                                <span class="inline-block px-2 py-1 text-green-600 bg-green-100 rounded-full text-xs">
+
+                                    Active
+                                </span>
+                                {%else%}
+                                <span class="inline-block px-2 py-1 text-red-600 bg-red-100 rounded-full text-xs">
+
+                                    Not Active
+                                </span>
+
+                                {%endif%}
+                            </td>
+
+                            <td class="px-4 py-3">{{product.created_at}}</td>
+                            <td class="px-4 py-3">
+                                {% for color in product.colors.all %}
+                                {{ color.name }}{% if not forloop.last %} & {% endif %}
+                                {% endfor %}
+                            </td>
+
+                             <td class="px-4 py-3">
+                                {% for image in product.images.all %}
+                                {%if image.is_primary%}
+                               <img class="w-12 h-12 mb-3 rounded-full shadow-lg" src="{{ image.image.url}}" alt="">
+                               {%endif%}
+                                {% endfor %}
+                            </td>
                             <td class="px-4 py-3">
                                 <div class="flex justify-center gap-2 flex-wrap text-sm">
-                                    <a href=""
-                                        class="text-green-600 hover:underline">View</a>
+                                    <a href="{% url 'edit_products_url' product.id %}" class="text-green-600 hover:underline">View</a>
                                     <!-- <form method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="text-red-600 hover:underline">Delete</button>
@@ -108,18 +139,22 @@
                 </table>
             </div>
 
-      
-    <div class="flex items-center space-x-2 mt-2 justify-end">
-                    {% if pages.has_previous %}
-                    <a href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">First</a>
-                    <a href="?page={{ pages.previous_page_number }}& {{request.GET.urlencode}}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Previous</a>
-                    {% endif %}
-                    <span class="px-3 py-1 text-sm">Page {{ pages.number }} of {{ pages.paginator.num_pages }}</span>
-                    {% if pages.has_next %}
-                    <a href="?page={{ pages.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %} & {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Next</a>
-                    <a href="?page={{ pages.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}" class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Last</a>
-                    {% endif %}
-                </div>
+
+            <div class="flex items-center space-x-2 mt-2 justify-end">
+                {% if pages.has_previous %}
+                <a href="?page=1{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}"
+                    class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">First</a>
+                <a href="?page={{ pages.previous_page_number }}& {{request.GET.urlencode}}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}"
+                    class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Previous</a>
+                {% endif %}
+                <span class="px-3 py-1 text-sm">Page {{ pages.number }} of {{ pages.paginator.num_pages }}</span>
+                {% if pages.has_next %}
+                <a href="?page={{ pages.next_page_number }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %} & {{request.GET.urlencode}}"
+                    class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Next</a>
+                <a href="?page={{ pages.paginator.num_pages }}{% if request.GET.per_page %}&per_page={{ request.GET.per_page }}{% endif %}& {{request.GET.urlencode}}"
+                    class="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm">Last</a>
+                {% endif %}
+            </div>
     </main>
 
 

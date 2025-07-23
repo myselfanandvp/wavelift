@@ -39,4 +39,10 @@ class PageNotFound(View):
     def get(self,request):
         return render(request,self.template_name,{})
     
+    
+class AllProducts(View):
+    template_name= "core/all_products.html"
+    def get(self,request):
+        return render(request,self.template_name,{})
+    
 

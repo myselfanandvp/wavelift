@@ -129,16 +129,7 @@ class ProductImage(models.Model):
         db_table = 'product_images'
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['product', 'is_primary'],
-                condition=models.Q(is_primary=True),
-                name='unique_primary_image_per_product'
-            )
-        ]
-        indexes = [
-            models.Index(fields=['product']),
-        ]
+        
 
     def __str__(self):
         return f"Image for {self.product.name}"

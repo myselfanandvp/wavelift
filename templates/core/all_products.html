@@ -1,0 +1,497 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+<!-- Main Content -->
+<main class="px-4 sm:px-6 md:px-12 lg:px-24 xl:px-32 py-8">
+    <!-- Header -->
+    <section class="py-8 text-center">
+   
+        <p class="text-sm sm:text-base font-light capitalize mt-2 text-gray-900">Upgrade your tech style. Explore the latest headphones and smartwatches here.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold uppercase mt-4 text-gray-900">All Products</h2>
+    </section>
+
+    <!-- Filters and Products -->
+    <section class="flex flex-col md:flex-row gap-6 lg:gap-8">
+        <!-- Filter Sidebar -->
+        <aside class="w-full md:w-1/4 bg-white  sm:p-6 rounded-lg shadow-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-base sm:text-lg font-bold uppercase text-gray-900">Filters & Sort</h3>
+                <button class="text-sm sm:text-base font-light capitalize text-gray-900 hover:text-gray-700">Clear All</button>
+            </div>
+            <div class="space-y-4">
+                <!-- Sort By -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Sort By
+                        <img src="images/keyboard_arrow_down-137.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="relevance">Relevance</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+                <!-- Color -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Color
+                        <img src="images/keyboard_arrow_down-144.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="all">All Colors</option>
+                        <option value="black">Black</option>
+                        <option value="white">White</option>
+                        <option value="green">Green</option>
+                        <option value="lavender">Lavender</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                    </select>
+                </div>
+                <!-- Playback -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Playback
+                        <img src="images/keyboard_arrow_down-159.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="all">All Playback Types</option>
+                        <option value="wireless">Wireless</option>
+                        <option value="wired">Wired</option>
+                        <option value="bluetooth">Bluetooth</option>
+                    </select>
+                </div>
+                <!-- Best For -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Best For
+                        <img src="images/keyboard_arrow_down-171.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="all">All Uses</option>
+                        <option value="casual">Casual</option>
+                        <option value="sports">Sports</option>
+                        <option value="travel">Travel</option>
+                        <option value="work">Work</option>
+                    </select>
+                </div>
+                <!-- Price -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Price
+                        <img src="images/keyboard_arrow_down-171.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="all">All Prices</option>
+                        <option value="0-50">$0 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-150">$100 - $150</option>
+                        <option value="150+">$150+</option>
+                    </select>
+                </div>
+                <!-- Features -->
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold capitalize flex justify-between items-center">
+                        Features
+                        <img src="images/keyboard_arrow_down-171.svg" alt="arrow" class="h-5 w-5">
+                    </h4>
+                    <hr class="my-2 border-gray-300">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-800 focus:ring-2 focus:ring-primary-300">
+                        <option value="all">All Features</option>
+                        <option value="noise-cancelling">Noise Cancelling</option>
+                        <option value="water-resistant">Water Resistant</option>
+                        <option value="long-battery">Long Battery Life</option>
+                        <option value="touch-controls">Touch Controls</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="flex-1">
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-2 sm:gap-4 mb-6">
+                <button class="px-3 py-1 sm:px-4 sm:py-2 border border-gray-900 rounded-lg text-sm sm:text-base font-light capitalize text-gray-900 hover:bg-gray-100">All</button>
+                <button class="px-3 py-1 sm:px-4 sm:py-2 bg-gray-900 text-white border border-gray-900 rounded-lg text-sm sm:text-base font-light capitalize hover:bg-gray-800">Smartwatches</button>
+                <button class="px-3 py-1 sm:px-4 sm:py-2 border border-gray-900 rounded-lg text-sm sm:text-base font-light capitalize text-gray-900 hover:bg-gray-100">True Wireless</button>
+                <button class="px-3 py-1 sm:px-4 sm:py-2 border border-gray-900 rounded-lg text-sm sm:text-base font-light capitalize text-gray-900 hover:bg-gray-100">Neckbands & Headphones</button>
+                <button class="px-3 py-1 sm:px-7 sm:py-2 border border-gray-900 rounded-lg text-sm sm:text-base font-light capitalize text-gray-900 hover:bg-gray-100">Wired Headphones</button>
+            </div>
+
+            <!-- Products -->
+            <section class="bg-gray-50 py-6 sm:py-8 md:py-12 p-2">
+                <div class="mx-auto max-w-screen-xl px-4 sm:px-6 2xl:px-0">
+                    <div class="grid grid-cols-1 md:grid-cols-2  gap-2">
+                        <!-- Product Card -->
+                        <div class="rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+                            <div class="h-40 sm:h-56 w-full">
+                                <a href="#">
+                                    <img class="mx-auto h-full object-contain" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-keyboard.svg" alt="Microsoft Surface Pro">
+                                </a>
+                            </div>
+                            <div class="pt-4 sm:pt-6">
+                                <div class="mb-4 flex items-center justify-between gap-4">
+                                    <span class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800">Up to 35% off</span>
+                                    <div class="flex items-center gap-1">
+                                        <button type="button" data-tooltip-target="tooltip-quick-look-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Quick look</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"></path>
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-quick-look-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Quick look
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                        <button type="button" data-tooltip-target="tooltip-add-to-favorites-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Add to Favorites</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-add-to-favorites-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Add to favorites
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-base sm:text-lg font-semibold leading-tight text-gray-900 hover:underline">Microsoft Surface Pro, Copilot+ PC, 13 Inch</a>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <div class="flex items-center">
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">4.9</p>
+                                    <p class="text-sm font-medium text-gray-500">(4,775)</p>
+                                </div>
+                                <ul class="mt-2 flex items-center gap-4 flex-wrap">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Fast Delivery</p>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Best Price</p>
+                                    </li>
+                                </ul>
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-xl sm:text-2xl font-extrabold leading-tight text-gray-900">$899</p>
+                                    <button type="button" class="inline-flex items-center rounded-lg bg-primary-700 px-3 sm:px-5 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"></path>
+                                        </svg>
+                                        Add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product card end -->
+ <!-- Product Card -->
+                        <div class="rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+                            <div class="h-40 sm:h-56 w-full">
+                                <a href="#">
+                                    <img class="mx-auto h-full object-contain" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-keyboard.svg" alt="Microsoft Surface Pro">
+                                </a>
+                            </div>
+                            <div class="pt-4 sm:pt-6">
+                                <div class="mb-4 flex items-center justify-between gap-4">
+                                    <span class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800">Up to 35% off</span>
+                                    <div class="flex items-center gap-1">
+                                        <button type="button" data-tooltip-target="tooltip-quick-look-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Quick look</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"></path>
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-quick-look-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Quick look
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                        <button type="button" data-tooltip-target="tooltip-add-to-favorites-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Add to Favorites</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-add-to-favorites-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Add to favorites
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-base sm:text-lg font-semibold leading-tight text-gray-900 hover:underline">Microsoft Surface Pro, Copilot+ PC, 13 Inch</a>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <div class="flex items-center">
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">4.9</p>
+                                    <p class="text-sm font-medium text-gray-500">(4,775)</p>
+                                </div>
+                                <ul class="mt-2 flex items-center gap-4 flex-wrap">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Fast Delivery</p>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Best Price</p>
+                                    </li>
+                                </ul>
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-xl sm:text-2xl font-extrabold leading-tight text-gray-900">$899</p>
+                                    <button type="button" class="inline-flex items-center rounded-lg bg-primary-700 px-3 sm:px-5 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"></path>
+                                        </svg>
+                                        Add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product card end -->
+
+                         <!-- Product Card -->
+                        <div class="rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+                            <div class="h-40 sm:h-56 w-full">
+                                <a href="#">
+                                    <img class="mx-auto h-full object-contain" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-keyboard.svg" alt="Microsoft Surface Pro">
+                                </a>
+                            </div>
+                            <div class="pt-4 sm:pt-6">
+                                <div class="mb-4 flex items-center justify-between gap-4">
+                                    <span class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800">Up to 35% off</span>
+                                    <div class="flex items-center gap-1">
+                                        <button type="button" data-tooltip-target="tooltip-quick-look-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Quick look</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"></path>
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-quick-look-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Quick look
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                        <button type="button" data-tooltip-target="tooltip-add-to-favorites-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Add to Favorites</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-add-to-favorites-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Add to favorites
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-base sm:text-lg font-semibold leading-tight text-gray-900 hover:underline">Microsoft Surface Pro, Copilot+ PC, 13 Inch</a>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <div class="flex items-center">
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">4.9</p>
+                                    <p class="text-sm font-medium text-gray-500">(4,775)</p>
+                                </div>
+                                <ul class="mt-2 flex items-center gap-4 flex-wrap">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Fast Delivery</p>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Best Price</p>
+                                    </li>
+                                </ul>
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-xl sm:text-2xl font-extrabold leading-tight text-gray-900">$899</p>
+                                    <button type="button" class="inline-flex items-center rounded-lg bg-primary-700 px-3 sm:px-5 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"></path>
+                                        </svg>
+                                        Add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product card end -->
+
+                          <!-- Product Card -->
+                        <div class="rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+                            <div class="h-40 sm:h-56 w-full">
+                                <a href="#">
+                                    <img class="mx-auto h-full object-contain" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-keyboard.svg" alt="Microsoft Surface Pro">
+                                </a>
+                            </div>
+                            <div class="pt-4 sm:pt-6">
+                                <div class="mb-4 flex items-center justify-between gap-4">
+                                    <span class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800">Up to 35% off</span>
+                                    <div class="flex items-center gap-1">
+                                        <button type="button" data-tooltip-target="tooltip-quick-look-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Quick look</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"></path>
+                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-quick-look-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Quick look
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                        <button type="button" data-tooltip-target="tooltip-add-to-favorites-8" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                                            <span class="sr-only">Add to Favorites</span>
+                                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                                            </svg>
+                                        </button>
+                                        <div id="tooltip-add-to-favorites-8" role="tooltip" class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                                            Add to favorites
+                                            <div class="tooltip-arrow" data-popper-arrow=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="text-base sm:text-lg font-semibold leading-tight text-gray-900 hover:underline">Microsoft Surface Pro, Copilot+ PC, 13 Inch</a>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <div class="flex items-center">
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                        <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">4.9</p>
+                                    <p class="text-sm font-medium text-gray-500">(4,775)</p>
+                                </div>
+                                <ul class="mt-2 flex items-center gap-4 flex-wrap">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Fast Delivery</p>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium text-gray-500">Best Price</p>
+                                    </li>
+                                </ul>
+                                <div class="mt-4 flex items-center justify-between gap-4">
+                                    <p class="text-xl sm:text-2xl font-extrabold leading-tight text-gray-900">$899</p>
+                                    <button type="button" class="inline-flex items-center rounded-lg bg-primary-700 px-3 sm:px-5 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"></path>
+                                        </svg>
+                                        Add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product card end -->
+
+
+                    </div>
+                    <!-- Show More Button -->
+                    <div class="w-full text-center mt-6">
+                        <button type="button" class="rounded-lg border dungeon master border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:outline-none focus:ring-4 focus:ring-gray-100">Show more</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pagination -->
+            <div class="flex justify-center items-center gap-2 mt-6">
+                <button class="p-2 bg-gray-400 rounded opacity-50 disabled:opacity-30" disabled>
+                    <img src="images/vector-57.svg" alt="previous" class="h-4 w-4">
+                </button>
+                <button class="p-2 border border-primary-600 bg-white rounded">
+                    <span class="text-sm font-bold text-primary-600">1</span>
+                </button>
+                <button class="p-2 border border-gray-300 bg-white rounded hover:bg-gray-100">
+                    <span class="text-sm font-bold text-gray-800">2</span>
+                </button>
+                <button class="p-2 border border-gray-300 bg-white rounded hover:bg-gray-100">
+                    <span class="text-sm font-bold text-gray-800">...</span>
+                </button>
+                <button class="p-2 border border-gray-300 bg-white rounded hover:bg-gray-100">
+                    <span class="text-sm font-bold text-gray-800">9</span>
+                </button>
+                <button class="p-2 border border-gray-300 bg-white rounded hover:bg-gray-100">
+                    <span class="text-sm font-bold text-gray-800">10</span>
+                </button>
+                <button class="p-2 bg-gray-400 rounded hover:opacity-75">
+                    <img src="images/vector-71.svg" alt="next" class="h-4 w-4">
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
