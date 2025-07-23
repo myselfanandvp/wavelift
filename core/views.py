@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
-
+from products.models import Product
 # Create your views here.
 
 class  HomePage(View):
@@ -9,7 +9,8 @@ class  HomePage(View):
     def get(self,request):
         if request.user.is_superuser:
             return redirect("admin_dashboard_url")
-        return render(request,self.template_name,{})
+        products = Product.objects.all()
+        return render(request,self.template_name,{'products':products})
     
 class Contactus(View):
     template_name = 'core/contact.html'
