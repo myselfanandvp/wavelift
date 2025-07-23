@@ -39,7 +39,8 @@ class UserFilter(django_filters.FilterSet):
             ('id', 'ID (Ascending)'),
             ('-id', 'ID (Descending)'),
         ],
-        label='Order By'
+        label='Order By',
+        empty_label="All"
         )
    
     class Meta:

@@ -1,5 +1,5 @@
 import django_filters
-from .models import Product, Color, Category
+from .models import Product, Color, Category, Brand
 from django import forms
 
 
@@ -10,27 +10,58 @@ class ProductFilter(django_filters.FilterSet):
             ('', 'All'),
             (0, 'Active'),
             (1, 'Not Active')
-        ], empty_label=None
+        ], empty_label=None,
+        widget=forms.Select(
+            attrs={
+                'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            }
+        )
     )
-    name = django_filters.ChoiceFilter(
+    name = django_filters.ModelChoiceFilter(
+        queryset=Product.objects.all(),
         label='Product Name',
-         
+        empty_label="ALL",
+        widget=forms.Select(
+            attrs={
+                'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            }
+        )
     )
     colors = django_filters.ModelMultipleChoiceFilter(
-        queryset=Color.objects.all(),
-
+    queryset=Color.objects.all(),
+    label="Colors",
+    
+    widget=forms.CheckboxSelectMultiple(  # or use SelectMultiple if you prefer a dropdown
+        attrs={
+            'class': 'text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+        }
     )
-    
-    
+)
+    brand = django_filters.ModelChoiceFilter(
+        queryset=Brand.objects.all(),
+        label="Brand",
+        empty_label="ALL",
+        widget=forms.Select(
+            attrs={
+                'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            }
+        )
+    )
+
+    category = django_filters.ModelChoiceFilter(
+        queryset=Category.objects.all(),
+        label="Category",
+        empty_label="ALL",
+        widget=forms.Select(
+            attrs={
+                'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            }
+        )
+    )
 
     class Meta:
         model = Product
         fields = ['name', 'category', 'brand', 'colors', 'is_deleted']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        product_names = Product.objects.values_list('name', 'name').distinct()
-        self.filters['name'].extra['choices'] = product_names
 
 
 class CategoryFilter(django_filters.FilterSet):
@@ -48,17 +79,27 @@ class CategoryFilter(django_filters.FilterSet):
             }
         )
     )
-    name = django_filters.CharFilter(lookup_expr='icontains', label="Name", widget=forms.TextInput(
-        attrs={
-            'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-        }
-    ))
-    slug = django_filters.CharFilter(lookup_expr="icontains", label='Slug', widget=forms.TextInput(
-        attrs={
-            'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
 
-        }
-    ))
+    name = django_filters.ModelChoiceFilter(
+        queryset=Category.objects.all(),
+        label="Name",
+        empty_label="All",
+
+        widget=forms.Select(
+            attrs={
+                'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            }
+        )
+
+    )
+    slug = django_filters.CharFilter(field_name="slug", label="Slug",
+                                     widget=forms.TextInput(
+                                         attrs={
+                                             'class': 'fg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                                         }
+                                     )
+
+                                     )
 
     id = django_filters.CharFilter(lookup_expr="icontains", label='ID', widget=forms.TextInput(
         attrs={

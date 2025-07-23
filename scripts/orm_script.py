@@ -1,14 +1,12 @@
 from users.models import User
-from products.models import Product
+from products.models import Product,Category,ProductImage
 from pprint import pprint
 from django.db import connection
 from datetime import datetime
 from time import sleep
 
-product = Product.objects.prefetch_related('images')
+print([ (i[0],i[0]) for i  in Product.objects.select_related('category').values_list("category__name").distinct()])
 
-for i in product:
-    print(i.name,list(i.images.all().values("image")))
 
 
 

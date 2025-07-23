@@ -10,7 +10,9 @@ class  HomePage(View):
         if request.user.is_superuser:
             return redirect("admin_dashboard_url")
         products = Product.objects.all()
-        return render(request,self.template_name,{'products':products})
+        new_arrivals = Product.objects.select_related('category').filter(category__name__istartswith="New Arrivals")
+
+        return render(request,self.template_name,{'products':products,'new_arrivals':new_arrivals})
     
 class Contactus(View):
     template_name = 'core/contact.html'
