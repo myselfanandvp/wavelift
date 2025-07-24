@@ -3,6 +3,7 @@ from django.views import View
 from products.models import Product
 # Create your views here.
 
+
 class  HomePage(View):
     template_name= 'core/index.html'
 
@@ -10,7 +11,7 @@ class  HomePage(View):
         if request.user.is_superuser:
             return redirect("admin_dashboard_url")
         products = Product.objects.all()
-        new_arrivals = Product.objects.select_related('category').filter(category__name__istartswith="New Arrivals")
+        new_arrivals = Product.objects.select_related('category').filter(category__name__istartswith="New Arrival")
 
         return render(request,self.template_name,{'products':products,'new_arrivals':new_arrivals})
     
@@ -46,6 +47,7 @@ class PageNotFound(View):
 class AllProducts(View):
     template_name= "core/all_products.html"
     def get(self,request):
-        return render(request,self.template_name,{})
+        products = Product.objects.all()
+        return render(request,self.template_name,{'products':products})
     
 

@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator, FileExt
 from uuid import uuid4
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from colorfield.fields import ColorField
+
 def validate_file_size(value):
     max_size = 5 * 1024 * 1024  # 5MB
     if value.size > max_size:
@@ -59,19 +61,35 @@ class Brand(models.Model):
         return f"{self.name}"
     
     
-class Color(models.Model):
+# class Color(models.Model):
+#     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+#     name = models.CharField(max_length=50, unique=True)
+#     hex_code = models.CharField(max_length=7, help_text="Hex code (e.g. #FFFFFF)")
+
+#     class Meta:
+#         db_table = 'colors'
+#         verbose_name = 'Color'
+#         verbose_name_plural = 'Colors'
+#         ordering = ['name']
+
+#     def __str__(self):
+#         return f"{self.name} ({self.hex_code})"
+
+
+
+class ProductColor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    name = models.CharField(max_length=50, unique=True)
-    hex_code = models.CharField(max_length=7, help_text="Hex code (e.g. #FFFFFF)")
+    color = ColorField(default='#FFFFFF')
+    name = models.CharField(max_length=50,unique=True,blank=False,null=False)
 
     class Meta:
-        db_table = 'colors'
-        verbose_name = 'Color'
-        verbose_name_plural = 'Colors'
-        ordering = ['name']
-
+        db_table = 'product_colors'
+        verbose_name = 'Product Color'
+        verbose_name_plural = 'Product Colors'
+        ordering = ['color']
+        
     def __str__(self):
-        return f"{self.name} ({self.hex_code})"
+        return f"{self.name}"
 
 class Product(models.Model):
     STATUS_CHOICES = (
@@ -87,7 +105,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     is_deleted = models.BooleanField(default=False)
-    colors = models.ManyToManyField(Color, related_name='products', blank=True)
+    colors = models.ManyToManyField(ProductColor, related_name='products', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     stock_qty = models.IntegerField(validators=[MinValueValidator(0)])

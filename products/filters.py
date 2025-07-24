@@ -1,6 +1,7 @@
 import django_filters
-from .models import Product, Color, Category, Brand
+from .models import Product, ProductColor, Category, Brand
 from django import forms
+
 
 
 class ProductFilter(django_filters.FilterSet):
@@ -28,12 +29,12 @@ class ProductFilter(django_filters.FilterSet):
         )
     )
     colors = django_filters.ModelMultipleChoiceFilter(
-    queryset=Color.objects.all(),
+    queryset=ProductColor.objects.all(),
     label="Colors",
     
     widget=forms.CheckboxSelectMultiple(  # or use SelectMultiple if you prefer a dropdown
         attrs={
-            'class': 'text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+            'class': 'flex justify-between items-center gap-2 bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
         }
     )
 )

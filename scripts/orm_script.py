@@ -5,7 +5,8 @@ from django.db import connection
 from datetime import datetime
 from time import sleep
 
-print([ (i[0],i[0]) for i  in Product.objects.select_related('category').values_list("category__name").distinct()])
+existing_images = Product.objects.prefetch_related("images")
+
 
 
 

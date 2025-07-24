@@ -36,7 +36,7 @@
     <h2 class="text-xl font-bold mb-4 text-center">TOP DEALS</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
-      <a href="#"
+      <a href="{% url 'all_products_url' %}"
         class="w-full text-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 block">
         All Deals
       </a>
@@ -59,7 +59,7 @@
     <div class="grid lg:grid-cols-4 place-items-center  grid-cols-1 md:grid-cols-2 gap-2">
 
       {%for product in products%}
-
+{%if not product.is_deleted%}
       <!-- product card -->
       <div
         class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -91,7 +91,7 @@
           <a href="#">
             <h5 class="text-xl tracking-tight text-slate-900">{{product.name}}</h5>
           </a>
-          <span class="text-sm font-bold text-slate-900">{{product.category}}</span>
+          <span class="text-sm text-slate-900">{{product.category}}</span>
 
           <div class="mt-2 mb-5 flex items-center justify-between">
             <p>
@@ -148,7 +148,7 @@
 
 
 
-
+{%endif%}
       {%endfor%}
 
 
@@ -184,14 +184,13 @@
 
 
       {% for new_product in new_arrivals %}
+      {%if not new_product.is_deleted%}
       <div
         class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
         {% for image in new_product.images.all%}
         {%if image.is_primary%}
-        <a class="relative mx-3 mt-3 flex items-center justify-center h-60 overflow-hidden rounded-xl" href="#">
-          <img class="object-cover" src="{{image.image.url}}"
-            alt="product image" />
-
+          <a class="relative mx-3 mt-3 flex justify-center h-60 overflow-hidden rounded-xl" href="#">
+          <img class="object-cover" src="{{image.image.url}}" alt="product image" />
 
           <span
             class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39%
@@ -217,6 +216,7 @@
         <div class="mt-4 px-5 pb-5">
           <a href="#">
             <h5 class="text-xl tracking-tight text-slate-900">{{ new_product.name }}</h5>
+            <h5 class="text-sm tracking-tight text-slate-900">{{ new_product.category }}</h5>
           </a>
           <div class="mt-2 mb-5 flex items-center justify-between">
             <p>
@@ -267,6 +267,7 @@
             Add to cart</a>
         </div>
       </div>
+      {%endif%}
       {%endfor%}
 
   </section>

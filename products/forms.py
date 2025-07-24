@@ -1,9 +1,33 @@
 from django import forms
-from .models import Product,Brand,Category,ProductImage,ProductReview,Color
+from .models import Product,Brand,Category,ProductImage,ProductReview,ProductColor
 from django.core.validators import FileExtensionValidator
 
 inputfield_style={"class":"bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}
 imagefield_style={"class":"hidden"}
+
+
+
+class ProductColorForm(forms.ModelForm):
+    class Meta:
+        model = ProductColor
+        fields = ['color', 'name']
+        widgets = {
+            'color': forms.TextInput(attrs={
+                'class': 'form-control',
+                'type': 'color',
+            }),
+            'name': forms.TextInput(attrs={
+                **inputfield_style,
+                'placeholder': 'Optional color name (e.g., Red)',
+            }),
+        }
+
+    def clean_color(self):
+        color = self.cleaned_data['color']
+        if not color or not color.startswith('#') or len(color) != 7:
+            raise forms.ValidationError('Invalid hex color code.')
+        return color
+
 
 
 class ProductForm(forms.ModelForm): 
@@ -33,13 +57,12 @@ class ProductForm(forms.ModelForm):
     
     
     colors = forms.ModelMultipleChoiceField(
-        queryset=Color.objects.all(),
-        required=True,
-        widget=forms.SelectMultiple(
-            attrs={
-                "class": "fg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            }
-        )
+        queryset=ProductColor.objects.all(),
+        required=False,  # Changed to align with blank=True in model
+        widget=forms.CheckboxSelectMultiple(attrs={
+            "class": "fg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1"
+        }),
+        
     )
 
     stock_qty= forms.CharField(widget=forms.NumberInput(attrs={**inputfield_style}))
@@ -120,3 +143,9 @@ class ProductImagesForm(forms.Form):
         cleaned_data['images'] = images
         return cleaned_data
   
+class CreatColorForm(forms.ModelForm):
+    color = forms.CharField(widget=forms.TextInput(attrs={ "value":"#8c1ff9" ,"type":"color","class":"w-32 h-10  bg-gradient-to-r from-indigo-600 to-purple-600   rounded-lg  hover:from-indigo-700 hover:to-purple-700 transition duration-300 transform hover:scale-105"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={ "class":"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}))
+    class Meta:
+        model = ProductColor
+        fields =['color','name']

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .forms import ProductForm, ProductImagesForm, ProductCategoryForm
+from .forms import ProductForm, ProductImagesForm, ProductCategoryForm,CreatColorForm,ProductColor
 from .models import Category
 from django.views import View
 from django.http import HttpResponse,HttpResponseForbidden
@@ -8,6 +8,8 @@ from .models import Product,ProductImage
 from .filters import ProductFilter,CategoryFilter
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 # Create your views here.
 
 def check_permission(**kwargs):
@@ -17,7 +19,7 @@ def check_permission(**kwargs):
 
 
 # Product Views
-
+@method_decorator(never_cache, name='dispatch')
 class CreateProudctView(LoginRequiredMixin,View):
     login_url="login_admin_url"
     template_name = "products/create_product.html"
@@ -53,8 +55,8 @@ class CreateProudctView(LoginRequiredMixin,View):
         return render(request, self.template_name, {"form": form,"product_images_form":product_images_form})
      
     
-    
-class ListProductView(View):
+@method_decorator(never_cache, name='dispatch')
+class ListProductView(LoginRequiredMixin,View):
     template_name="products/list_products.html"
     def get(self,request):
         premission=check_permission(request=request)
@@ -73,9 +75,10 @@ class ListProductView(View):
 
 
 
-
+@method_decorator(never_cache, name='dispatch')
 class EditProductView(LoginRequiredMixin, View):
     login_url = "login_admin_url"
+    # template_name = "products/edit_product.html"  
     template_name = "products/edit_product.html"  
 
     def get(self, request, product_id):
@@ -89,11 +92,12 @@ class EditProductView(LoginRequiredMixin, View):
         # Populate forms with existing data
         form = ProductForm(instance=product)
         product_images_form = ProductImagesForm()
-
+        existing_images = Product.objects.prefetch_related("images").filter(id=product_id)
         return render(request, self.template_name, {
             "form": form,
             "product_images_form": product_images_form,
-            "product": product
+            "product": product,
+            "existing_products":existing_images
         })
 
     def post(self, request, product_id):
@@ -105,10 +109,7 @@ class EditProductView(LoginRequiredMixin, View):
 
         if product_images_form.is_valid() and form.is_valid():
             # Save updated product details
-            product = form.save(commit=False)
-            product.save()
-            # Update colors
-            product.colors.set(form.cleaned_data['colors'])
+            form.save()
 
             # Handle images
             images = product_images_form.cleaned_data.get('images', [])
@@ -132,7 +133,7 @@ class EditProductView(LoginRequiredMixin, View):
         })
 
 # Category Views
-
+@method_decorator(never_cache, name='dispatch')
 class CreateCategory(LoginRequiredMixin,View):
     template_name = "products/create_category.html"
 
@@ -151,7 +152,7 @@ class CreateCategory(LoginRequiredMixin,View):
         form.add_error(None,"Category is not saved")
         return render(request,self.template_name,{"form":form,'iscreate':True})
     
-     
+@method_decorator(never_cache, name='dispatch') 
 class ListCategory(LoginRequiredMixin,View):
     template_name = 'products/list_category.html'
     def get(self,request):
@@ -167,8 +168,8 @@ class ListCategory(LoginRequiredMixin,View):
         return render(request,self.template_name,{'categorys':filter.qs,'filter':filter,"pages":page_obj})
         
    
-
-class EditCategory(View):
+@method_decorator(never_cache, name='dispatch')
+class EditCategory(LoginRequiredMixin,View):
     template_name = "products/create_category.html"
     def get(self, request,id):
         premission=check_permission(request=request)
@@ -189,7 +190,7 @@ class EditCategory(View):
             return redirect('list_category_url')
         return render(request, self.template_name, {'form': form})
 
-
+@method_decorator(never_cache, name='dispatch')
 # Soft delete on category
 class DeleteCategory(LoginRequiredMixin,View):   
     def post(self, request,id):
@@ -205,5 +206,18 @@ class DeleteCategory(LoginRequiredMixin,View):
         return redirect("list_category_url")
 
     
+class CreateColor(View):
+    template_name="products/create_color.html"
+    def get(self,request):
+        form = CreatColorForm()
+        colors = ProductColor.objects.all()
+        return render(request,self.template_name,{'form':form,'colors':colors})
     
-    
+    def post(self,request):
+        form = CreatColorForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data.get('color')
+            print(data)
+            return HttpResponse("Color is saved")
+        return HttpResponse("Color is notsaved")
+        
