@@ -70,8 +70,7 @@ class ListProductView(LoginRequiredMixin,View):
      
         return render(request,self.template_name,{'products':filter.qs,"myFilter":filter,"pages":page_obj})
         
-    def post(self,request):
-        pass
+    
 
 
 
@@ -216,8 +215,8 @@ class CreateColor(View):
     def post(self,request):
         form = CreatColorForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data.get('color')
-            print(data)
-            return HttpResponse("Color is saved")
-        return HttpResponse("Color is notsaved")
+            form.save()
+            return redirect('add_color_url')
+        form.add_error("name","color creation failed")
+        return render(request,self.template_name,{'form':form})
         

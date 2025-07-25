@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from products.models import Product
+from django.db.models.aggregates import Max,Min
+from .filter import Myfilter
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -47,7 +50,15 @@ class PageNotFound(View):
 class AllProducts(View):
     template_name= "core/all_products.html"
     def get(self,request):
-        products = Product.objects.all()
-        return render(request,self.template_name,{'products':products})
+        products = Product.objects.filter(is_deleted__isnull=False)
+        page_number = request.GET.get('page')  # Use 'page' as the query parameter
+        product_filter = Myfilter(request.GET,queryset=products)
+        for fields in ['name','is_deleted']:
+            del product_filter.form.fields[fields]
+        paginator = Paginator(product_filter.qs, per_page=10)
+        page_obj = paginator.get_page(page_number)  # Get the page object
+     
+        pricerange=products.aggregate(max_price=Max('price'),min_price=Min('price'))                  
+        return render(request,self.template_name,{'products':product_filter.qs,'price_range':pricerange,'filter':product_filter,"pages":page_obj})
     
 

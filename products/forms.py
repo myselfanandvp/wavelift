@@ -145,7 +145,7 @@ class ProductImagesForm(forms.Form):
   
 class CreatColorForm(forms.ModelForm):
     color = forms.CharField(widget=forms.TextInput(attrs={ "value":"#8c1ff9" ,"type":"color","class":"w-32 h-10  bg-gradient-to-r from-indigo-600 to-purple-600   rounded-lg  hover:from-indigo-700 hover:to-purple-700 transition duration-300 transform hover:scale-105"}))
-    name = forms.CharField(widget=forms.TextInput(attrs={ "class":"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={ "class":"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5","placeholder":"Enter the name of the color"}))
     class Meta:
         model = ProductColor
         fields =['color','name']

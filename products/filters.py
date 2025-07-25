@@ -59,8 +59,10 @@ class ProductFilter(django_filters.FilterSet):
             }
         )
     )
+   
 
     class Meta:
+       
         model = Product
         fields = ['name', 'category', 'brand', 'colors', 'is_deleted']
 
@@ -112,3 +114,4 @@ class CategoryFilter(django_filters.FilterSet):
     class Meta:
         model = Category
         fields = ['id', 'slug', 'status', 'name']
+

@@ -5,7 +5,10 @@ from django.db import connection
 from datetime import datetime
 from time import sleep
 
-existing_images = Product.objects.prefetch_related("images")
+greater_price = Product.objects.filter(price__gte=5)
+lesser_price = Product.objects.filter(price__lte=1000)
+
+print(lesser_price)
 
 
 

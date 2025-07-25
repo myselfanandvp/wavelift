@@ -12,6 +12,10 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from datetime import datetime, timedelta
+from django.conf import settings
+from django.urls import reverse
+from allauth.account.adapter import DefaultAccountAdapter
+
 
 
 # OTP generator helper
@@ -368,3 +372,4 @@ class BlockUser(LoginRequiredMixin,View):
             return JsonResponse({"message":"User is Unblocked"})
 
         return JsonResponse({"message":"Something went wrong"})
+    
